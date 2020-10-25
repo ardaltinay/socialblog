@@ -1,6 +1,7 @@
 package com.company.socialblog.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user")
@@ -32,15 +33,16 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.active = true;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    /* public void setId(int id) {
         this.id = id;
-    }
+    } */
 
     public String getUsername() {
         return username;
