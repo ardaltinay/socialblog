@@ -1,11 +1,15 @@
 package com.company.socialblog.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,12 +17,17 @@ public class User {
     private int id;
 
     @Column(name = "username")
+    @Size(min = 4, max = 20, message = "must be between 4 and 20 characters")
+    @NotNull(message = "is required")
     private String username;
 
     @Column(name = "password")
+    @Size(min = 8, max = 255, message = "must be greater than 8 characters without whitespace")
+    @NotNull(message = "must be greater than 8 characters without whitespace")
     private String password;
 
     @Column(name = "email")
+    @Email(message = "Invalid Email")
     private String email;
 
     @Column(name = "biography")

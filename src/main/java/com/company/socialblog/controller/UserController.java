@@ -2,25 +2,20 @@ package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
 import com.company.socialblog.service.UserService;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Controller
-@Validated
 public class UserController {
 
     private UserService userService;
@@ -30,23 +25,34 @@ public class UserController {
         this.userService = userService;
     }
 
+    // add an databinder... to convert trim input strings
+    // remove leading and trailing whitespace
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
     @GetMapping("/")
     public String homePageGet() {
         return "home";
     }
 
     @GetMapping("/register")
-    public String registerPageGet(Model model) {
+    public String registerPageGet(Model model, @ModelAttribute("theUser") User theUser) {
         model.addAttribute("message", 0);
         return "register";
     }
 
+    // postmapping a model ekleyince neden getmapping a da eklemek gerekiyor?
     @PostMapping("/register")
-    public String registerPagePost(Model model, HttpServletRequest request) {
+    public String registerPagePost(Model model, HttpServletRequest request,
+                        @Valid @ModelAttribute("theUser") User theUser, BindingResult result) {
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-
 
         List<User> users = userService.findUsers();
         for (User user : users) {
@@ -59,7 +65,12 @@ public class UserController {
             }
         }
 
-        User theUser = new User(username, password, email);
+        if(result.hasErrors()) {
+            return "register";
+        }
+
+        theUser = new User(username, password, email);
+
         try {
             userService.saveUser(theUser);
         } catch (Exception e) {
@@ -85,5 +96,30 @@ public class UserController {
         }
         model.addAttribute("USERNAME", sessionUsername);
         return "profile";
+    }
+
+    @GetMapping("/login")
+    public String loginPageGet() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginPagePost(Model model, HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        List<User> users = userService.findUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                // Session
+                if (user.getUsername() != null) {
+                    request.getSession().setAttribute("USERNAME", user.getUsername());
+                }
+                return "redirect:/profile";
+            } else {
+                model.addAttribute("message", 0);
+            }
+        }
+        return "login";
     }
 }
