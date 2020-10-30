@@ -7,7 +7,6 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,20 +39,28 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerPageGet(Model model, @ModelAttribute("theUser") User theUser) {
+    public String registerPageGet(Model model, HttpServletRequest request,
+                       @ModelAttribute("theUser") User theUser) {
         model.addAttribute("message", 0);
-        return "register";
+        // Session
+        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+        if (sessionUsername != null) {
+            return "redirect:/profile";
+        } else {
+            return "register";
+        }
     }
 
     // postmapping a model ekleyince neden getmapping a da eklemek gerekiyor?
     @PostMapping("/register")
     public String registerPagePost(Model model, HttpServletRequest request,
                         @Valid @ModelAttribute("theUser") User theUser, BindingResult result) {
-
+        // get value from register form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
+        // fetching users from db and control for register
         List<User> users = userService.findUsers();
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -65,12 +72,13 @@ public class UserController {
             }
         }
 
+        // when invalid form validation
         if(result.hasErrors()) {
             return "register";
         }
 
+        // save user the db if validation ok
         theUser = new User(username, password, email);
-
         try {
             userService.saveUser(theUser);
         } catch (Exception e) {
@@ -99,15 +107,23 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginPageGet() {
-        return "login";
+    public String loginPageGet(HttpServletRequest request) {
+        // Session
+        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+        if (sessionUsername != null) {
+            return "redirect:/profile";
+        } else {
+            return "login";
+        }
     }
 
     @PostMapping("/login")
     public String loginPagePost(Model model, HttpServletRequest request) {
+        // get value from login form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        // fetching users from db and control for login
         List<User> users = userService.findUsers();
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -121,5 +137,12 @@ public class UserController {
             }
         }
         return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logoutPageGet(HttpServletRequest request) {
+        // removing session for logout
+        request.getSession().removeAttribute("USERNAME");
+        return "redirect:/";
     }
 }

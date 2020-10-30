@@ -1,10 +1,7 @@
 package com.company.socialblog.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Entity
@@ -19,6 +16,7 @@ public class User implements Serializable {
     @Column(name = "username")
     @Size(min = 4, max = 20, message = "must be between 4 and 20 characters")
     @NotNull(message = "is required")
+    @Pattern(regexp ="[0-9a-z]+", message = "Use only A-z and 0-9 chars.")
     private String username;
 
     @Column(name = "password")
