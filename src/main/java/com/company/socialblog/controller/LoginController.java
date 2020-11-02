@@ -49,6 +49,7 @@ public class LoginController {
                 }
                 return "redirect:/profile";
             } else {
+                model.addAttribute("message", 0);
                 return "login";
             }
         }
