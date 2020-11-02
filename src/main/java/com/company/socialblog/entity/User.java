@@ -2,11 +2,10 @@ package com.company.socialblog.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +15,7 @@ public class User implements Serializable {
     @Column(name = "username")
     @Size(min = 4, max = 20, message = "must be between 4 and 20 characters")
     @NotNull(message = "is required")
-    @Pattern(regexp ="[0-9a-z]+", message = "Use only A-z and 0-9 chars.")
+    @Pattern(regexp ="[0-9a-z]+", message = "Use only a-z and 0-9 characters")
     private String username;
 
     @Column(name = "password")
