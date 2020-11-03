@@ -25,6 +25,7 @@ public class User {
 
     @Column(name = "email")
     @Email(message = "Invalid Email")
+    @NotNull(message = "is required")
     private String email;
 
     @Column(name = "biography")
