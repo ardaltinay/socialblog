@@ -14,7 +14,7 @@ public class ProfileController {
         // Session
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
-            return "redirect:/register";
+            return "redirect:/login";
         }
         model.addAttribute("USERNAME", sessionUsername);
         return "profile";

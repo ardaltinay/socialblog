@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="head :: headfragment (pageTitle = 'Social Blog - Profile')"></head>
+<head th:include="head :: headfragment (pageTitle = 'Social Blog - Settings')"></head>
 <body>
     <div class="container">
         <nav class="navbar navbar-light" style="background-color: #fff;">
@@ -11,14 +11,11 @@
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <li class="nav-item">
-                    <a class="nav-link" href="/settings">Settings</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
             </ul>
         </nav>
     </div>
-    <h2 th:text="|Welcome ${USERNAME}|"></h2>
+
 </body>
 </html>

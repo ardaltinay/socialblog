@@ -20,7 +20,7 @@
                 <h2>Login</h2>
                 <p class="text-muted"> Please enter your username and password!</p>
                 <div th:switch="${message}">
-                    <p th:case = 0 class="text-info">Invalid username or password!</p>
+                    <p th:case = 0 class="error-field">Invalid username or password!</p>
                 </div>
                 <span class="icons">
                     <i class="fas fa-user"></i>

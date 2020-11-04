@@ -1,6 +1,7 @@
 package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
+import com.company.socialblog.service.PasswordHashingService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -17,17 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 @Controller
 public class RegisterController {
 
     private UserService userService;
+    private PasswordHashingService passwordHashingService;
 
     @Autowired
-    public RegisterController(UserService userService) {
+    public RegisterController(UserService userService, PasswordHashingService passwordHashingService) {
         this.userService = userService;
+        this.passwordHashingService = passwordHashingService;
     }
 
     // add a data binder... to convert trim input strings
@@ -51,7 +51,6 @@ public class RegisterController {
         }
     }
 
-    // postmapping a model ekleyince neden getmapping a da eklemek gerekiyor?
     @PostMapping("/register")
     public String registerPagePost(Model model, HttpServletRequest request,
                                    @Valid @ModelAttribute("theUser") User theUser, BindingResult result) {
@@ -60,23 +59,8 @@ public class RegisterController {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
-        String hashedPassword = null;
-        String salt = "g9nPBBWy4uDCLzBBYKR4HnpkBAppF4jE";
-        String saltedPassword = salt + password;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] bytes = md.digest(saltedPassword.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++)
-            {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            hashedPassword = sb.toString();
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-        }
+        // hashing password from passwordHashingService
+        String hashedPassword = passwordHashingService.passwordHashing(password);
 
         // fetching users from db and control for login
         List<User> users = userService.findUsers();
@@ -109,7 +93,6 @@ public class RegisterController {
             request.getSession().setAttribute("USERNAME", theUser.getUsername());
         }
 
-        model.addAttribute("message", 1);
-        return "profile";
+        return "redirect:/profile";
     }
 }
