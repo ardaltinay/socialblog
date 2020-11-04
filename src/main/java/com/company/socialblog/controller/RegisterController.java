@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 @Controller
 public class RegisterController {
 
@@ -57,6 +60,24 @@ public class RegisterController {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
+        String hashedPassword = null;
+        String salt = "g9nPBBWy4uDCLzBBYKR4HnpkBAppF4jE";
+        String saltedPassword = salt + password;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = md.digest(saltedPassword.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            hashedPassword = sb.toString();
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+
         // fetching users from db and control for login
         List<User> users = userService.findUsers();
         for (User user : users) {
@@ -75,7 +96,7 @@ public class RegisterController {
         }
 
         // save user to db if validation ok
-        theUser = new User(username, password, email);
+        theUser = new User(username, hashedPassword, email);
         try {
             userService.saveUser(theUser);
         } catch (Exception e) {
