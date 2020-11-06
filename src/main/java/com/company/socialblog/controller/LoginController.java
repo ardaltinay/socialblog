@@ -26,7 +26,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPageGet(HttpServletRequest request) {
-        // Session
+        // Session control
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername != null) {
             return "redirect:/profile";
@@ -47,8 +47,6 @@ public class LoginController {
         // fetching users from db and control for login
         List<User> users = userService.findUsers();
         for (User user : users) {
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
             if (user.getUsername().equals(username) && user.getPassword().equals(hashedPassword)) {
                 // Session
                 if (user.getUsername() != null) {

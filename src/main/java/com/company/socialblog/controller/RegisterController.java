@@ -40,8 +40,7 @@ public class RegisterController {
     }
 
     @GetMapping("/register")
-    public String registerPageGet(Model model, HttpServletRequest request,
-                                  @ModelAttribute("theUser") User theUser) {
+    public String registerPageGet(HttpServletRequest request, @ModelAttribute("theUser") User theUser) {
         // Session
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername != null) {
@@ -91,6 +90,7 @@ public class RegisterController {
         // Session
         if (theUser.getUsername() != null) {
             request.getSession().setAttribute("USERNAME", theUser.getUsername());
+            request.getSession().setAttribute("USER", theUser);
         }
 
         return "redirect:/profile";
