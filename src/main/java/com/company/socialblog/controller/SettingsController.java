@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,29 +21,39 @@ public class SettingsController {
     }
 
     @GetMapping("/settings")
-    public String settingsPageGet(HttpServletRequest request) {
+    public String settingsPageGet(HttpServletRequest request, Model model) {
         // session control
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
             return "redirect:/login";
         }
+        // finding user by username
+        User user = userService.findByUsername(sessionUsername);
+
+        // add user biography for template to model
+        model.addAttribute("userBiography", user.getBiography());
 
         return "settings";
     }
 
     @PostMapping("/settings")
     public String settingsPagePost(HttpServletRequest request, Model model) {
+        // get request from html form
         String biography = request.getParameter("biography");
+
+        // session
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+
+        // finding user by username
         User user = userService.findByUsername(sessionUsername);
-        System.out.println(user);
+
+        // set user biography and save db
         user.setBiography(biography);
-        System.out.println(user.getBiography());
-        System.out.println(user);
+        userService.saveUser(user);
+
+        // add user biography for template to model
         model.addAttribute("userBiography", user.getBiography());
 
-
-        return "profile";
-
+        return "settings";
     }
 }
