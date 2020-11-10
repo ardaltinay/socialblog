@@ -90,7 +90,6 @@ public class RegisterController {
         // Session
         if (theUser.getUsername() != null) {
             request.getSession().setAttribute("USERNAME", theUser.getUsername());
-            request.getSession().setAttribute("USER", theUser);
         }
 
         return "redirect:/profile";

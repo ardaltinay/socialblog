@@ -64,6 +64,23 @@ body {
     cursor: pointer
 }
 
+#bio-save, #email-save {
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #335f3c;
+    padding: 14px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+#bio-save:hover, #email-save:hover {
+    background: #335f3c;
+}
+
 .box input[type="submit"]:hover {
     background: #335f3c
 }
