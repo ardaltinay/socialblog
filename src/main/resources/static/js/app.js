@@ -39,17 +39,17 @@ $("#pass-save").click(function () {
     $(".success-pass").hide();
     $(".fail-pass").hide();
     // get values from html form
-    let currentpass = $("#current-pass").val();
-    let newpass = $("#new-pass").val();
-    let repeatpass = $("#new-pass-valid").val();
+    let current_pass = $("#current-pass").val();
+    let new_pass = $("#new-pass").val();
+    let repeat_pass = $("#new-pass-valid").val();
     // check new password and repeat password equality
-    if (newpass != repeatpass) {
+    if (new_pass != repeat_pass) {
         $(".notValid-pass").show();
         return false;
     }
     // jquery post request
     $.post("http://localhost:8080/settings/ajax?type=pass",
-        { currentPassword: currentpass, newPassword: newpass, repeatPassword: repeatpass }, function () {
+        { currentPassword: current_pass, newPassword: new_pass, repeatPassword: repeat_pass }, function () {
     }).done(function( data ) {
         if (data.StatusCode == 1) {
             $(".success-pass").show();
