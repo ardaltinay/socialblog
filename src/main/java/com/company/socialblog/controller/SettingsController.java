@@ -1,6 +1,7 @@
 package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
+import com.company.socialblog.service.PasswordHashingService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,12 @@ import java.util.HashMap;
 public class SettingsController {
 
     private UserService userService;
+    private PasswordHashingService passwordHashingService;
 
     @Autowired
-    public SettingsController(UserService userService) {
+    public SettingsController(UserService userService, PasswordHashingService passwordHashingService) {
         this.userService = userService;
+        this.passwordHashingService = passwordHashingService;
     }
 
     @GetMapping("/settings")
@@ -73,63 +76,82 @@ public class SettingsController {
         if (sessionUsername == null) {
             response = 0;
         }
+        HashMap<String, Integer> map = new HashMap<>();
 
         // get type from jquery post request
         String type = request.getParameter("type");
         // type control
-        if (type.equals("bio")) {
+        switch (type) {
+            case "bio":
+                // get request from html form
+                String biography = request.getParameter("biography");
+                if (biography == null) {
+                    response = 0;
+                }
 
-            // get request from html form
-            String biography = request.getParameter("biography");
-            if (biography == null) {
-                response = 0;
-            }
+                // finding user by username
+                User user = userService.findByUsername(sessionUsername);
 
-            // finding user by username
-            User user = userService.findByUsername(sessionUsername);
+                // set user biography and save db
+                try {
+                    user.setBiography(biography);
+                    userService.saveUser(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response = 0;
+                }
 
-            // set user biography and save db
-            try {
-                user.setBiography(biography);
-                userService.saveUser(user);
-            } catch(Exception e) {
-                e.printStackTrace();
-                response = 0;
-            }
+                map.put("StatusCode", response);
+                return map;
 
-            HashMap<String, Integer> map = new HashMap<>();
-            map.put("StatusCode", response);
+            case "email":
+                String email = request.getParameter("email");
+                if (email == null) {
+                    response = 0;
+                }
 
-            return map;
+                user = userService.findByUsername(sessionUsername);
 
-        } else if (type.equals("email")) {
+                try {
+                    user.setEmail(email);
+                    userService.saveUser(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response = 0;
+                }
 
-            String email = request.getParameter("email");
-            if (email == null) {
-                response = 0;
-            }
+                map.put("StatusCode", response);
+                return map;
 
-            User user = userService.findByUsername(sessionUsername);
+            case "pass":
+                String currentPass = request.getParameter("currentPassword");
+                String newPass = request.getParameter("newPassword");
+                String repeatPass = request.getParameter("repeatPassword");
 
-            try {
-                user.setEmail(email);
-                userService.saveUser(user);
-            } catch(Exception e) {
-                e.printStackTrace();
-                response = 0;
-            }
+                if (newPass.equals("")) {
+                    response = 0;
+                }
+                String hashedPassword = passwordHashingService.passwordHashing(currentPass);
 
-            HashMap<String, Integer> map = new HashMap<>();
-            map.put("StatusCode", response);
+                user = userService.findByUsernameAndPassword(sessionUsername, hashedPassword);
+                if (user == null) {
+                    response = 0;
+                }
 
-            return map;
+                try {
+                    user.setPassword(passwordHashingService.passwordHashing(newPass));
+                    userService.saveUser(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response = 0;
+                }
 
-        } else {
-            HashMap<String, Integer> map = new HashMap<>();
-            map.put("StatusCode", 0);
-            return map;
+                map.put("StatusCode", response);
+                return map;
+
+            default:
+                map.put("StatusCode", 0);
+                return map;
         }
-
     }
-
 }

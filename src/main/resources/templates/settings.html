@@ -23,18 +23,39 @@
                     <textarea class="form-control" rows="5" name="biography" th:text="${userBiography}"></textarea>
                     <input type="submit" value="Save">
                 </form> -->
-                <form class="box" id="ajaxForm">
-                    <h2>Settings</h2>
-                    <p class="text-muted"> Please enter your email!</p>
-                    <input type="email" id="email-input" class="form-control" th:value="${userEmail}">
-                    <button id="email-save">Save</button>
-                    <p class="text-muted"> Please enter your biography!</p>
-                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
-                    <button id="bio-save">Save</button>
-                </form>
+                <form class="box box-settings" id="ajaxForm">
+                    <p id="formHeader"><b>Settings</b></p>
+                    <p class="formText"> Please enter your email!</p>
+                    <input type="email" id="email-input" class="form-control" placeholder="Email" th:value="${userEmail}">
+                    <div>
+                        <p class="fail-email">Could not update email, please try again!</p>
+                        <p class="notValid-email">Check your e-mail format!</p>
+                        <p class="success-email">Email updated!</p>
+                    </div>
+                    <span id="email-save">Save</span>
 
+                    <p class="formText"> Please enter your password!</p>
+                    <input type="password" id="current-pass" class="form-control" placeholder="Current password">
+                    <input type="password" id="new-pass" class="form-control" placeholder="New password">
+                    <input type="password" id="new-pass-valid" class="form-control" placeholder="New password(again)">
+                    <div>
+                        <p class="fail-pass">Wrong current password!</p>
+                        <p class="notValid-pass">Passwords did not match!</p>
+                        <p class="success-pass">Password updated!</p>
+                    </div>
+                    <span id="pass-save">Save</span>
+
+                    <p class="formText"> Please enter your biography!</p>
+                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
+                    <div>
+                        <p class="success-bio">Biography updated!</p>
+                        <p class="fail-bio">Could not update biography, please try again!</p>
+                    </div>
+                    <span id="bio-save">Save</span>
+                </form>
            </div>
         </main>
+        <footer class="footer" th:include="footer :: footerfragment"></footer>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

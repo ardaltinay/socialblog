@@ -17,7 +17,7 @@
         </nav>
         <div class="form-container">
             <form class="box" action="/register" method="post" th:object="${theUser}">
-                <h2>Register</h2>
+                <p class="text-muted" id="formHeader"><b>Register</b></p>
                 <div th:switch="${message}">
                     <p th:case = 2 class="error-field">Database Error!</p>
                     <p th:case = 3 class="error-field">Existing username!</p>

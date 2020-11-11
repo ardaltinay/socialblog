@@ -9,9 +9,19 @@ body {
 }
 
 .box {
-    width: 450px;
+    max-width: 450px;
     padding: 40px;
-    background: #191919;
+    background: #0c0c0c;
+    text-align: center;
+    transition: 0.25s;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-radius: 30px
+}
+.box-settings {
+    max-width: 400px;
+    padding: 40px;
+    background: #5d5d5d;
     text-align: center;
     transition: 0.25s;
     margin-top: 50px;
@@ -25,7 +35,7 @@ body {
     border: 0;
     background: none;
     display: block;
-    margin: 20px;
+    margin: 20px auto;
     text-align: center;
     border: 2px solid #3498db;
     padding: 10px 10px;
@@ -46,7 +56,7 @@ body {
 .box input[type="password"]:focus,
 .box input[type="email"]:focus {
     width: 300px;
-    border-color: #2ecc71
+    border-color: #2ecc71;
 }
 
 .box input[type="submit"] {
@@ -64,12 +74,12 @@ body {
     cursor: pointer
 }
 
-#bio-save, #email-save {
+#bio-save, #email-save, #pass-save {
     background: none;
-    display: block;
+    display: inline-block;
     margin: 20px auto;
     text-align: center;
-    border: 2px solid #335f3c;
+    border: 2px solid #5facff;
     padding: 14px 40px;
     outline: none;
     color: white;
@@ -77,17 +87,29 @@ body {
     transition: 0.25s;
     cursor: pointer;
 }
-#bio-save:hover, #email-save:hover {
-    background: #335f3c;
+#bio-save:hover, #email-save:hover, #pass-save:hover {
+    background: #778da5;
+}
+#bio-textarea {
+    margin-bottom: 10px;
 }
 
 .box input[type="submit"]:hover {
     background: #335f3c
 }
+#formHeader {
+    font-size: 20px;
+}
+.formText {
+    font-size: 18px;
+}
 
 .form-container {
     text-align: -webkit-center;
     text-align: -moz-center;
+}
+.form-control:focus {
+    box-shadow: none;
 }
 
 .forgot {
@@ -107,3 +129,16 @@ body {
 }
 
 .error-field {color: #ff6f6f}
+
+.fail-email, .notValid-email, .fail-pass, .notValid-pass, .fail-bio {
+    color: #a50d0d;
+    display: none;
+}
+.success-email, .success-pass, .success-bio {
+    color: #033103;
+    display: none;
+}
+
+.footer {
+    text-align: center;
+}
