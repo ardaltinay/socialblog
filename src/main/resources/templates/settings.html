@@ -25,6 +25,14 @@
                 </form> -->
                 <form class="box box-settings" id="ajaxForm">
                     <p id="formHeader"><b>Settings</b></p>
+                    <p class="formText"> Please enter your biography!</p>
+                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
+                    <div>
+                        <p class="success-bio">Biography updated!</p>
+                        <p class="fail-bio">Could not update biography, please try again!</p>
+                    </div>
+                    <span id="bio-save">Save</span>
+
                     <p class="formText"> Please enter your email!</p>
                     <input type="email" id="email-input" class="form-control" placeholder="Email" th:value="${userEmail}">
                     <div>
@@ -37,21 +45,13 @@
                     <p class="formText"> Please enter your password!</p>
                     <input type="password" id="current-pass" class="form-control" placeholder="Current password">
                     <input type="password" id="new-pass" class="form-control" placeholder="New password">
-                    <input type="password" id="new-pass-valid" class="form-control" placeholder="New password(again)">
+                    <input type="password" id="new-pass-valid" class="form-control" placeholder="New password (again)">
                     <div>
                         <p class="fail-pass">Wrong current password!</p>
                         <p class="notValid-pass">Passwords did not match!</p>
                         <p class="success-pass">Password updated!</p>
                     </div>
                     <span id="pass-save">Save</span>
-
-                    <p class="formText"> Please enter your biography!</p>
-                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
-                    <div>
-                        <p class="success-bio">Biography updated!</p>
-                        <p class="fail-bio">Could not update biography, please try again!</p>
-                    </div>
-                    <span id="bio-save">Save</span>
                 </form>
            </div>
         </main>

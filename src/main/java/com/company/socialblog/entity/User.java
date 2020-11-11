@@ -2,6 +2,7 @@ package com.company.socialblog.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -33,6 +34,9 @@ public class User {
 
     @Column(name = "active")
     private boolean active;
+
+    @Column(name = "timestamp")
+    private Date timestamp;
 
     public User() {}
 
@@ -87,6 +91,14 @@ public class User {
         this.active = active;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -96,6 +108,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", biography='" + biography + '\'' +
                 ", active=" + active +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }

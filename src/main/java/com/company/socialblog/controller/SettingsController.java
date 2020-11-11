@@ -126,9 +126,9 @@ public class SettingsController {
             case "pass":
                 String currentPass = request.getParameter("currentPassword");
                 String newPass = request.getParameter("newPassword");
-                String repeatPass = request.getParameter("repeatPassword");
 
-                if (newPass.equals("")) {
+                // bakilacak
+                if (newPass == null) {
                     response = 0;
                 }
                 String hashedPassword = passwordHashingService.passwordHashing(currentPass);
