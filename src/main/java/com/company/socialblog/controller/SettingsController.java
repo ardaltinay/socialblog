@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -70,8 +71,8 @@ public class SettingsController {
 
         int response = 1;
         int message = 0;
-
         HashMap<String, Integer> map = new HashMap<>();
+
         // session
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
@@ -95,7 +96,7 @@ public class SettingsController {
 
                 // finding user by username
                 User user = userService.findByUsername(sessionUsername);
-                model.addAttribute("time", user.getTimestamp());
+                model.addAttribute("currentUser", user);
 
                 // set user biography and save db
                 try {
