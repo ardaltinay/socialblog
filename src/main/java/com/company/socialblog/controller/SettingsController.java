@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
 @Controller
@@ -68,15 +66,17 @@ public class SettingsController {
 
     @PostMapping("/settings/ajax")
     @ResponseBody
-    public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request) {
+    public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request, Model model) {
 
         int response = 1;
+        int message = 0;
+
+        HashMap<String, Integer> map = new HashMap<>();
         // session
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
             response = 0;
         }
-        HashMap<String, Integer> map = new HashMap<>();
 
         // get type from jquery post request
         String type = request.getParameter("type");
@@ -87,10 +87,15 @@ public class SettingsController {
                 String biography = request.getParameter("biography");
                 if (biography == null) {
                     response = 0;
+                    message = 1;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
 
                 // finding user by username
                 User user = userService.findByUsername(sessionUsername);
+                model.addAttribute("time", user.getTimestamp());
 
                 // set user biography and save db
                 try {
@@ -99,15 +104,23 @@ public class SettingsController {
                 } catch (Exception e) {
                     e.printStackTrace();
                     response = 0;
+                    message = 2;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
-
                 map.put("StatusCode", response);
+                map.put("ResponseMessage", message);
                 return map;
 
             case "email":
                 String email = request.getParameter("email");
                 if (email == null) {
                     response = 0;
+                    message = 1;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
 
                 user = userService.findByUsername(sessionUsername);
@@ -118,24 +131,36 @@ public class SettingsController {
                 } catch (Exception e) {
                     e.printStackTrace();
                     response = 0;
+                    message = 2;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
-
                 map.put("StatusCode", response);
+                map.put("ResponseMessage", message);
                 return map;
 
             case "pass":
                 String currentPass = request.getParameter("currentPassword");
                 String newPass = request.getParameter("newPassword");
 
-                // bakilacak
-                if (newPass == null) {
-                    response = 0;
-                }
                 String hashedPassword = passwordHashingService.passwordHashing(currentPass);
 
                 user = userService.findByUsernameAndPassword(sessionUsername, hashedPassword);
                 if (user == null) {
                     response = 0;
+                    message = 1;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
+                }
+
+                if (newPass == null || newPass.length() < 8) {
+                    response = 0;
+                    message = 2;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
 
                 try {
@@ -144,9 +169,13 @@ public class SettingsController {
                 } catch (Exception e) {
                     e.printStackTrace();
                     response = 0;
+                    message = 3;
+                    map.put("StatusCode", response);
+                    map.put("ResponseMessage", message);
+                    return map;
                 }
-
                 map.put("StatusCode", response);
+                map.put("ResponseMessage", message);
                 return map;
 
             default:

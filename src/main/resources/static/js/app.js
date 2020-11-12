@@ -1,7 +1,7 @@
 // email validation function
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return true;
+    return re.test(email);
 }
 
 let currentEmail = $("#email-input").val();
@@ -44,7 +44,7 @@ $("#pass-save").click(function () {
     let repeat_pass = $("#new-pass-valid").val();
     // check new password and repeat password equality
     if (new_pass != repeat_pass) {
-        $(".notValid-pass").show();
+        $(".notMatch-pass").show();
         return false;
     }
     // jquery post request
@@ -54,7 +54,11 @@ $("#pass-save").click(function () {
         if (data.StatusCode == 1) {
             $(".success-pass").show();
         } else {
-            $(".fail-pass").show();
+            if(data.ResponseMessage == 2) {
+                $(".notValid-pass").show();
+            } else {
+                $(".fail-pass").show();
+            }
         }
     });
 });

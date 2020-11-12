@@ -130,7 +130,7 @@ body {
 
 .error-field {color: #ff6f6f}
 
-.fail-email, .notValid-email, .fail-pass, .notValid-pass, .fail-bio {
+.fail-email, .notValid-email, .fail-pass, .notValid-pass, .notMatch-pass, .fail-bio {
     color: #a50d0d;
     display: none;
 }

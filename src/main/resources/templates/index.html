@@ -2,22 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="head :: headfragment (pageTitle = 'Social Blog')"></head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-light" style="background-color: #fff;">
-        <a class="navbar-brand" href="/">Social Blog</a>
-        <ul class="nav justify-content-end">
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+    <div class="container">
+        <nav class="navbar navbar-light" style="background-color: #fff;">
+            <a class="navbar-brand" href="/">Social Blog</a>
+            <ul class="nav justify-content-end">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div th:include="footer :: scriptfragment"></div>
 </body>
 </html>
