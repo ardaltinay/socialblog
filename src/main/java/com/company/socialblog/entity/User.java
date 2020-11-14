@@ -1,5 +1,7 @@
 package com.company.socialblog.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -36,6 +38,7 @@ public class User {
     private boolean active;
 
     @Column(name = "timestamp")
+    @CreationTimestamp
     private Date timestamp;
 
     public User() {}

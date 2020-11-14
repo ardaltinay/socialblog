@@ -39,6 +39,7 @@ public class SettingsController {
         // add user biography for template to model
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("userEmail", user.getEmail());
+        model.addAttribute("userTimestamp", user.getTimestamp());
 
         return "settings";
     }
@@ -67,7 +68,7 @@ public class SettingsController {
 
     @PostMapping("/settings/ajax")
     @ResponseBody
-    public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request, Model model) {
+    public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request) {
 
         int response = 1;
         int message = 0;
@@ -96,7 +97,6 @@ public class SettingsController {
 
                 // finding user by username
                 User user = userService.findByUsername(sessionUsername);
-                model.addAttribute("currentUser", user);
 
                 // set user biography and save db
                 try {
@@ -111,7 +111,6 @@ public class SettingsController {
                     return map;
                 }
                 map.put("StatusCode", response);
-                map.put("ResponseMessage", message);
                 return map;
 
             case "email":
@@ -138,7 +137,6 @@ public class SettingsController {
                     return map;
                 }
                 map.put("StatusCode", response);
-                map.put("ResponseMessage", message);
                 return map;
 
             case "pass":
@@ -176,7 +174,6 @@ public class SettingsController {
                     return map;
                 }
                 map.put("StatusCode", response);
-                map.put("ResponseMessage", message);
                 return map;
 
             default:
