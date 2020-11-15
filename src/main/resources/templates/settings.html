@@ -53,7 +53,13 @@
                         <p class="success-pass">Password updated!</p>
                     </div>
                     <span id="pass-save">Save</span>
-                    <div th:text="|Registered date: ${userTimestamp}|"></div>
+                    <div class="register-date" th:text="|Registered date: ${userTimestamp}|"></div>
+                    <a id="disable-link">Disable Account</a>
+                    <div id="disable-content">
+                        <p class="text-primary">Are you sure you want to disable your account?</p>
+                        <span id="button-yes">Yes</span>
+                        <span id="button-no">No</span>
+                    </div>
                 </form>
            </div>
         </main>

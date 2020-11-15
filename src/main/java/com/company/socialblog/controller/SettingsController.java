@@ -176,6 +176,26 @@ public class SettingsController {
                 map.put("StatusCode", response);
                 return map;
 
+            case "delete":
+                int disableAccount = 1;
+
+                user = userService.findByUsername(sessionUsername);
+
+                try {
+                    user.setActive(false);
+                    userService.saveUser(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    disableAccount = 0;
+                    map.put("DisableAccount", disableAccount);
+                    return map;
+                }
+
+                request.getSession().removeAttribute("USERNAME");
+
+                map.put("DisableAccount", disableAccount);
+                return map;
+
             default:
                 map.put("StatusCode", 0);
                 return map;

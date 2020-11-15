@@ -85,4 +85,27 @@ $("#bio-save").click(function () {
     });
 });
 
+// Disable account
+// Click function for disable account link
+$("#disable-link").click(function () {
+    $("#disable-link").hide();
+    $("#disable-content").show();
+})
+
+// Click function for no button
+$("#button-no").click(function () {
+    $("#disable-content").hide();
+    $("#disable-link").show();
+})
+
+// Click function for yes button
+$("#button-yes").click(function () {
+    $.post("http://localhost:8080/settings/ajax?type=delete", function () {
+    }).done(function (data) {
+        if (data.DisableAccount == 1) {
+            window.location.replace("http://localhost:8080");
+        }
+    })
+})
+
 

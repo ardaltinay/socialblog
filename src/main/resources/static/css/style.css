@@ -90,8 +90,28 @@ body {
 #bio-save:hover, #email-save:hover, #pass-save:hover {
     background: #778da5;
 }
+
+#button-no, #button-yes {
+    background: none;
+    display: inline-block;
+    margin: 5px auto;
+    text-align: center;
+    border: 2px solid #5facff;
+    padding: 5px 15px;
+    outline: none;
+    color: white;
+    border-radius: 20px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+#button-yes:hover, #button-no:hover {
+    background-color: #778da5;
+}
 #bio-textarea {
     margin-bottom: 10px;
+}
+.register-date {
+    margin-bottom: 20px;
 }
 
 .box input[type="submit"]:hover {
@@ -120,6 +140,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#disable-link {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+#disable-content {
+    display: none;
 }
 
 .fa-user,
