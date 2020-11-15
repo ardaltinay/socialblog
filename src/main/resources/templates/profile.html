@@ -20,6 +20,6 @@
         </nav>
     </div>
     <h3 th:text="|Welcome ${USERNAME}|"></h3>
-    <div th:include="footer :: scriptfragment"></div>
+    <div th:replace="footer :: scriptfragment"></div>
 </body>
 </html>

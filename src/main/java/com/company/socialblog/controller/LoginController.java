@@ -47,7 +47,7 @@ public class LoginController {
         // fetching users from db and control for login
         List<User> users = userService.findUsers();
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(hashedPassword)) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(hashedPassword) && user.isActive()) {
                 // Session
                 if (user.getUsername() != null) {
                     request.getSession().setAttribute("USERNAME", user.getUsername());
