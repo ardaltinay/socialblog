@@ -143,7 +143,6 @@ body {
 }
 
 #disable-link {
-    text-decoration: none;
     color: #007bff;
     cursor: pointer;
 }

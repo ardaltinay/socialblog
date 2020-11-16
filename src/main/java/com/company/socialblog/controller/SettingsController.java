@@ -71,7 +71,7 @@ public class SettingsController {
     public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request) {
 
         int response = 1;
-        int message = 0;
+        int message;
         HashMap<String, Integer> map = new HashMap<>();
 
         // session
