@@ -41,6 +41,9 @@ public class User {
     @CreationTimestamp
     private Date timestamp;
 
+    @Column(name = "profile_photo")
+    private String profilePhoto;
+
     public User() {}
 
     public User(String username, String password, String email) {
@@ -100,6 +103,14 @@ public class User {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     @Override

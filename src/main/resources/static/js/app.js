@@ -21,7 +21,7 @@ $("#email-save").click(function () {
         $(".notValid-email").show();
     } else {
         // jquery post request
-        $.post("http://localhost:8080/settings/ajax?type=email",  { email: email }, function () {
+        $.post("/settings/ajax?type=email",  { email: email }, function () {
         }).done(function( data ) {
             if (data.StatusCode == 1) {
                 $(".success-email").show();
@@ -48,7 +48,7 @@ $("#pass-save").click(function () {
         return false;
     }
     // jquery post request
-    $.post("http://localhost:8080/settings/ajax?type=pass",
+    $.post("/settings/ajax?type=pass",
         { currentPassword: current_pass, newPassword: new_pass, repeatPassword: repeat_pass }, function () {
     }).done(function( data ) {
         if (data.StatusCode == 1) {
@@ -75,7 +75,7 @@ $("#bio-save").click(function () {
         return false;
     }
     // jquery post request
-    $.post("http://localhost:8080/settings/ajax?type=bio",  { biography: bio }, function () {
+    $.post("/settings/ajax?type=bio",  { biography: bio }, function () {
     }).done(function( data ) {
         if (data.StatusCode == 1) {
             $(".success-bio").show();
@@ -100,10 +100,10 @@ $("#button-no").click(function () {
 
 // Click function for yes button
 $("#button-yes").click(function () {
-    $.post("http://localhost:8080/settings/ajax?type=delete", function () {
+    $.post("/settings/ajax?type=delete", function () {
     }).done(function (data) {
         if (data.DisableAccount == 1) {
-            window.location.replace("http://localhost:8080");
+            window.location.replace("/");
         }
     })
 })

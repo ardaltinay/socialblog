@@ -23,8 +23,13 @@
                     <textarea class="form-control" rows="5" name="biography" th:text="${userBiography}"></textarea>
                     <input type="submit" value="Save">
                 </form> -->
-                <form class="box box-settings" id="ajaxForm">
-                    <p id="formHeader"><b>Settings</b></p>
+                <div class="box box-settings">
+                    <form action="/settings" method="post" enctype="multipart/form-data">
+                        <p id="formHeader"><b>Settings</b></p>
+                        <label class="formText">Choose your profile photo:</label>
+                        <input type="file" class="form-control-file" name="profilephoto">
+                        <input type="submit" value="Send">
+                    </form>
                     <p class="formText"> Please enter your biography!</p>
                     <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
                     <div>
@@ -60,11 +65,11 @@
                         <span id="button-yes">Yes</span>
                         <span id="button-no">No</span>
                     </div>
-                </form>
+                </div>
            </div>
         </main>
-        <footer class="footer" th:include="footer :: footerfragment"></footer>
     </div>
+    <footer class="footer" th:include="footer :: footerfragment"></footer>
     <div th:replace="footer :: scriptfragment"></div>
 </body>
 </html>

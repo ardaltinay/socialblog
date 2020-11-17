@@ -1,17 +1,20 @@
 package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
+import com.company.socialblog.service.FileUploadService;
 import com.company.socialblog.service.PasswordHashingService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 @Controller
@@ -19,6 +22,7 @@ public class SettingsController {
 
     private UserService userService;
     private PasswordHashingService passwordHashingService;
+    //private FileUploadService fileUpload;
 
     @Autowired
     public SettingsController(UserService userService, PasswordHashingService passwordHashingService) {
@@ -65,6 +69,30 @@ public class SettingsController {
         return "settings";
     }
      */
+
+    @PostMapping("/settings")
+    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto) {
+        // get request from html form
+        // String profilePhoto = request.getParameter("profilephoto");
+
+        if (profilePhoto.isEmpty()) {
+            System.out.println("dosya bulunamadı");
+        }
+        System.out.println(profilePhoto.getOriginalFilename());
+        try {
+            byte[] bytes = profilePhoto.getBytes();
+            System.out.println(bytes);
+            Path path = Paths.get("C:\\Users\\Arda\\Desktop\\" + profilePhoto.getOriginalFilename());
+            System.out.println(path);
+            Files.write(path, bytes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("işlem tamam");
+        return "settings";
+    }
 
     @PostMapping("/settings/ajax")
     @ResponseBody
