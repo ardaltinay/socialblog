@@ -28,9 +28,9 @@
                         <p id="formHeader"><b>Settings</b></p>
                         <label class="formText">Choose your profile photo:</label>
                         <input type="file" class="form-control-file" name="profilephoto">
-                        <input type="submit" value="Send">
+                        <input type="submit" value="Save" id="photo-save">
                     </form>
-                    <p class="formText"> Please enter your biography!</p>
+                    <p class="formText">You can change your biography here.</p>
                     <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
                     <div>
                         <p class="success-bio">Biography updated!</p>
@@ -38,7 +38,7 @@
                     </div>
                     <span id="bio-save">Save</span>
 
-                    <p class="formText"> Please enter your email!</p>
+                    <p class="formText">You can change your email address here.</p>
                     <input type="email" id="email-input" class="form-control" placeholder="Email" th:value="${userEmail}">
                     <div>
                         <p class="fail-email">Could not update email, please try again!</p>
@@ -47,7 +47,7 @@
                     </div>
                     <span id="email-save">Save</span>
 
-                    <p class="formText"> Please enter your password!</p>
+                    <p class="formText">You can change your password here.</p>
                     <input type="password" id="current-pass" class="form-control" placeholder="Current password">
                     <input type="password" id="new-pass" class="form-control" placeholder="New password">
                     <input type="password" id="new-pass-valid" class="form-control" placeholder="New password (again)">

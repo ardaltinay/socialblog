@@ -74,7 +74,7 @@ body {
     cursor: pointer
 }
 
-#bio-save, #email-save, #pass-save {
+#bio-save, #email-save, #pass-save, #photo-save {
     background: none;
     display: inline-block;
     margin: 20px auto;
@@ -87,7 +87,7 @@ body {
     transition: 0.25s;
     cursor: pointer;
 }
-#bio-save:hover, #email-save:hover, #pass-save:hover {
+#bio-save:hover, #email-save:hover, #pass-save:hover, #photo-save:hover {
     background: #778da5;
 }
 
@@ -130,6 +130,10 @@ body {
 }
 .form-control:focus {
     box-shadow: none;
+}
+
+.form-control-file {
+    margin: 10px auto;
 }
 
 .forgot {

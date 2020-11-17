@@ -1,23 +1,31 @@
 package com.company.socialblog.service;
 
-import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
-public interface FileUploadService {
+@Service
+public class FileUploadService {
 
-    void init();
+    String path = "C:\\Users\\Arda\\Desktop\\";
 
-    void store(MultipartFile file);
+    public void uploadFile(MultipartFile file) {
 
-    Stream<Path> loadAll();
-
-    Path load(String filename);
-
-    Resource loadAsResource(String filename);
-
-    void deleteAll();
-
+        if (file.isEmpty()) {
+            System.out.println("Failed to store empty file!");
+        }
+        try {
+            var fileName = file.getOriginalFilename();
+            System.out.println(fileName);
+            var inputStream = file.getInputStream();
+            System.out.println(inputStream);
+            Files.copy(inputStream, Paths.get(path + fileName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println("failed to store file");
+        }
+    }
 }
