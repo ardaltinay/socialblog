@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileUploadService {
@@ -23,7 +22,7 @@ public class FileUploadService {
             System.out.println(fileName);
             var inputStream = file.getInputStream();
             System.out.println(inputStream);
-            Files.copy(inputStream, Paths.get(path + fileName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStream, Paths.get(path + fileName));
         } catch (IOException e) {
             System.out.println("failed to store file");
         }
