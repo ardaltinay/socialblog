@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 @Controller
@@ -67,14 +70,25 @@ public class SettingsController {
     }
      */
 
+    // Post method for profile photo
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto) {
 
-        fileUpload.uploadFile(profilePhoto);
+        String fileName = profilePhoto.getOriginalFilename();
+        String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
+        String newFileName = timeStamp + "." + fileType;
 
-        return "settings";
+        try {
+            fileUpload.uploadFile(profilePhoto, newFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/settings";
     }
 
+    // Post method for settings with ajax
     @PostMapping("/settings/ajax")
     @ResponseBody
     public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request) {
