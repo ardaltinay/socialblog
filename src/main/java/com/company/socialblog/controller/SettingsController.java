@@ -72,16 +72,23 @@ public class SettingsController {
 
     // Post method for profile photo
     @PostMapping("/settings")
-    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto) {
-
+    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request) {
+        // create a new unique file name
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
         String newFileName = timeStamp + "." + fileType;
 
+        // Finding user by username
+        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+        User user = userService.findByUsername(sessionUsername);
+
+        // Upload file, set profile photo and save database
         try {
             fileUpload.uploadFile(profilePhoto, newFileName);
-        } catch (IOException e) {
+            user.setProfilePhoto(newFileName);
+            userService.saveUser(user);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
