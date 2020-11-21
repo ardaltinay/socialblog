@@ -73,7 +73,7 @@ public class SettingsController {
     // Post method for profile photo
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request) {
-        // create a new unique file name
+        // create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
