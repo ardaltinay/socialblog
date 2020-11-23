@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class SettingsController {
         // finding user by username
         User user = userService.findByUsername(sessionUsername);
 
-        // add user biography for template to model
+        // add user attributes for template to model
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("userEmail", user.getEmail());
         model.addAttribute("userTimestamp", user.getTimestamp());
@@ -72,7 +73,8 @@ public class SettingsController {
 
     // Post method for profile photo
     @PostMapping("/settings")
-    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request) {
+    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
+                                   HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -82,20 +84,22 @@ public class SettingsController {
         // Checking file type control
         String[] fileTypes = {"jpeg", "jpg", "png"};
         for (String types : fileTypes) {
-            
-        }
+            if (fileType.equals(types)) {
+                // Finding user by username
+                String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+                User user = userService.findByUsername(sessionUsername);
 
-        // Finding user by username
-        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-        User user = userService.findByUsername(sessionUsername);
-
-        // Upload file, set profile photo and save database
-        try {
-            fileUpload.uploadFile(profilePhoto, newFileName);
-            user.setProfilePhoto(newFileName);
-            userService.saveUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+                // Upload file, set profile photo and save database
+                try {
+                    fileUpload.uploadFile(profilePhoto, newFileName);
+                    user.setProfilePhoto(newFileName);
+                    userService.saveUser(user);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "File type must be 'jpeg', 'jpg' or 'png'");
+            }
         }
 
         return "redirect:/settings";
