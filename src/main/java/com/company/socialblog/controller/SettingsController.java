@@ -74,7 +74,7 @@ public class SettingsController {
     // Post method for profile photo
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
-                                   HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+                                   HttpServletRequest request) {
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -98,7 +98,7 @@ public class SettingsController {
                     e.printStackTrace();
                 }
             } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "File type must be 'jpeg', 'jpg' or 'png'");
+                
             }
         }
 
