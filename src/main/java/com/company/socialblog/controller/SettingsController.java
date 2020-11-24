@@ -74,7 +74,7 @@ public class SettingsController {
     // Post method for profile photo
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
-                                   HttpServletRequest request) {
+                                   HttpServletRequest request, Model model) {
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -89,7 +89,7 @@ public class SettingsController {
                 String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
                 User user = userService.findByUsername(sessionUsername);
 
-                // Upload file, set profile photo and save database
+                // Upload file, set profile photo and save to database
                 try {
                     fileUpload.uploadFile(profilePhoto, newFileName);
                     user.setProfilePhoto(newFileName);
@@ -98,7 +98,8 @@ public class SettingsController {
                     e.printStackTrace();
                 }
             } else {
-                
+                model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
+                return "settings";
             }
         }
 
