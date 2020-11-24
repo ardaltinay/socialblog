@@ -38,6 +38,7 @@ $("#pass-save").click(function () {
     $(".notValid-pass").hide();
     $(".success-pass").hide();
     $(".fail-pass").hide();
+    $(".notMatch-pass").hide();
     // get values from html form
     let current_pass = $("#current-pass").val();
     let new_pass = $("#new-pass").val();
