@@ -97,10 +97,10 @@ public class SettingsController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else {
+            } /*else {
                 model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
                 return "settings";
-            }
+            }*/
         }
 
         return "redirect:/settings";
