@@ -13,7 +13,7 @@ public class FileUploadService {
     String path = "C:\\Users\\Arda\\Desktop\\repositories\\socialblog\\src\\main\\resources\\static\\uploads\\";
 
     public void uploadFile(MultipartFile file, String newFileName) throws IOException {
-        File dir = new File("2020\\");
+        File dir = new File(path + "2020");
         System.out.println(dir);
         boolean value = dir.mkdirs();
         if (value) {
@@ -25,7 +25,8 @@ public class FileUploadService {
         if (file.isEmpty()) {
             System.out.println("Failed to store empty file!");
         }
-        file.transferTo(Paths.get(path + dir + newFileName));
+
+        file.transferTo(Paths.get(dir + "\\" + newFileName));
 
     }
 }
