@@ -90,6 +90,11 @@ body {
 #bio-save:hover, #email-save:hover, #pass-save:hover, #photo-save:hover {
     background: #778da5;
 }
+.form-container .box form img {
+    height: 180px;
+    width: 150px;
+    border-radius: 50%;
+}
 
 #button-no, #button-yes {
     background: none;

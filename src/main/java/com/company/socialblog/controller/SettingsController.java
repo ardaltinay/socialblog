@@ -48,6 +48,7 @@ public class SettingsController {
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("userEmail", user.getEmail());
         model.addAttribute("userTimestamp", user.getTimestamp());
+        model.addAttribute("userProfilePhoto", user.getProfilePhoto());
 
         return "settings";
     }
@@ -83,7 +84,7 @@ public class SettingsController {
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
-        String newFileName = "\\" + timeStamp + "." + fileType;
+        String newFileName = timeStamp + "." + fileType;
 
         // mime type and file extension type control
         /*File f = new File(newFileName);
@@ -102,7 +103,7 @@ public class SettingsController {
             // Upload file, set profile photo and save to database
             try {
                 String resultDate = fileUpload.createUrlPath();
-                fileUpload.uploadFile(profilePhoto, newFileName);
+                fileUpload.uploadFile(profilePhoto, "\\" + newFileName);
                 user.setProfilePhoto(resultDate + newFileName);
                 userService.saveUser(user);
             } catch (Exception e) {
