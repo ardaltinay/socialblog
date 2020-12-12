@@ -6,21 +6,25 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 
 @Service
 public class FileUploadService {
 
     String path = "C:\\Users\\Arda\\Desktop\\repositories\\socialblog\\src\\main\\resources\\static\\uploads\\";
 
-    public void uploadFile(MultipartFile file, String newFileName) throws IOException {
-        File dir = new File(path + "2020");
-        System.out.println(dir);
-        boolean value = dir.mkdirs();
-        if (value) {
-            System.out.println("The new directory is created.");
-        } else {
-            System.out.println("The directory already exists.");
-        }
+    public String uploadFile(MultipartFile file, String newFileName) throws IOException {
+
+        Calendar cal = Calendar.getInstance();
+        LocalDateTime time = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+
+        int year = time.getYear();
+        int month = time.getMonthValue();
+        int day = time.getDayOfMonth();
+        new File(path + year + "\\" + month + "\\" + day).mkdirs();
+        File dir = new File(path + year + "\\" + month + "\\" + day);
 
         if (file.isEmpty()) {
             System.out.println("Failed to store empty file!");
@@ -28,5 +32,7 @@ public class FileUploadService {
 
         file.transferTo(Paths.get(dir + "\\" + newFileName));
 
+        String result = year + "\\" + month + "\\" + day + "\\";
+        return result;
     }
 }

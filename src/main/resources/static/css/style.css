@@ -166,7 +166,7 @@ body {
     color: #a50d0d;
     display: none;
 }
-.success-email, .success-pass, .success-bio {
+.success-email, .success-pass, .success-bio, .success-field {
     color: #033103;
     display: none;
 }

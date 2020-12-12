@@ -7,11 +7,9 @@ import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -26,14 +24,15 @@ public class SettingsController {
     private FileUploadService fileUpload;
 
     @Autowired
-    public SettingsController(UserService userService, PasswordHashingService passwordHashingService, FileUploadService fileUpload) {
+    public SettingsController(UserService userService, PasswordHashingService passwordHashingService,
+                              FileUploadService fileUpload) {
         this.userService = userService;
         this.passwordHashingService = passwordHashingService;
         this.fileUpload = fileUpload;
     }
 
     @GetMapping("/settings")
-    public String settingsPageGet(HttpServletRequest request, Model model) {
+    public String settingsPageGet(HttpServletRequest request, Model model, @ModelAttribute("successMessage") String success) {
         // session control
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
@@ -74,37 +73,35 @@ public class SettingsController {
 
     // Post method for profile photo
     @PostMapping("/settings")
-    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
-                                   HttpServletRequest request, Model model) {
+    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request,
+       Model model, RedirectAttributes redirectAttributes, @ModelAttribute("successMessage") String success) {
+
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
         String newFileName = timeStamp + "." + fileType;
 
-        // Checking file type control
-        String[] fileTypes = {"jpeg", "jpg", "png"};
-        for (String types : fileTypes) {
-            if (fileType.equals(types)) {
-                // Finding user by username
-                String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-                User user = userService.findByUsername(sessionUsername);
+        if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
+            // Finding user by username
+            String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+            User user = userService.findByUsername(sessionUsername);
 
-                // Upload file, set profile photo and save to database
-                try {
-                    fileUpload.uploadFile(profilePhoto, newFileName);
-                    user.setProfilePhoto(newFileName);
-                    userService.saveUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } /*else {
-                model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
-                return "settings";
-            }*/
+            // Upload file, set profile photo and save to database
+            try {
+                String resultDate = fileUpload.uploadFile(profilePhoto, newFileName);
+                user.setProfilePhoto(resultDate + newFileName);
+                userService.saveUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "File upload was successful!");
+            return "redirect:/settings";
+        } else {
+            model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
+            return "settings";
         }
 
-        return "redirect:/settings";
     }
 
     // Post method for settings with ajax

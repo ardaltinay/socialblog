@@ -20,9 +20,11 @@
                 <div class="box box-settings">
                     <form action="/settings" method="post" enctype="multipart/form-data">
                         <p id="formHeader"><b>Settings</b></p>
+                        <img th:src="@{/../static}">
                         <label class="formText">Choose your profile photo:</label>
                         <input type="file" class="form-control-file" name="profilephoto">
-                        <!--<div th:class="error-field" th:text="${errorMessage}"></div>-->
+                        <div th:class="error-field" th:text="${errorMessage}"></div>
+                        <div th:class="success-field" th:text="${successMessage}"></div>
                         <input type="submit" value="Save" id="photo-save">
                     </form>
                     <p class="formText">You can change your biography here.</p>
