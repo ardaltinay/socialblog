@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,7 +83,16 @@ public class SettingsController {
         String fileName = profilePhoto.getOriginalFilename();
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
-        String newFileName = timeStamp + "." + fileType;
+        String newFileName = "\\" + timeStamp + "." + fileType;
+
+        // mime type and file extension type control
+        /*File f = new File(newFileName);
+        String mimetype= new MimetypesFileTypeMap().getContentType(f);
+        String type = mimetype.split("/")[0];
+        if(type.equals("image"))
+            System.out.println("It's an image");
+        else
+            System.out.println("It's NOT an image");*/
 
         if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
             // Finding user by username
@@ -89,7 +101,8 @@ public class SettingsController {
 
             // Upload file, set profile photo and save to database
             try {
-                String resultDate = fileUpload.uploadFile(profilePhoto, newFileName);
+                String resultDate = fileUpload.createUrlPath();
+                fileUpload.uploadFile(profilePhoto, newFileName);
                 user.setProfilePhoto(resultDate + newFileName);
                 userService.saveUser(user);
             } catch (Exception e) {
