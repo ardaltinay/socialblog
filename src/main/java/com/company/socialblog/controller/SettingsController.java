@@ -32,7 +32,7 @@ public class SettingsController {
     }
 
     @GetMapping("/settings")
-    public String settingsPageGet(HttpServletRequest request, Model model, @ModelAttribute("successMessage") String success) {
+    public String settingsPageGet(HttpServletRequest request, Model model) {
         // session control
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
@@ -74,7 +74,7 @@ public class SettingsController {
     // Post method for profile photo
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request,
-       Model model, RedirectAttributes redirectAttributes, @ModelAttribute("successMessage") String success) {
+       Model model, RedirectAttributes redirectAttributes) {
 
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
