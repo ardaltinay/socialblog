@@ -52,28 +52,6 @@ public class SettingsController {
 
         return "settings";
     }
-    /*
-    @PostMapping("/settings")
-    public String settingsPagePost(HttpServletRequest request, Model model) {
-        // get request from html form
-        String biography = request.getParameter("biography");
-
-        // session
-        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-
-        // finding user by username
-        User user = userService.findByUsername(sessionUsername);
-
-        // set user biography and save db
-        user.setBiography(biography);
-        userService.saveUser(user);
-
-        // add user biography for template to model
-        model.addAttribute("userBiography", user.getBiography());
-
-        return "settings";
-    }
-     */
 
     // Post method for profile photo
     @PostMapping("/settings")
