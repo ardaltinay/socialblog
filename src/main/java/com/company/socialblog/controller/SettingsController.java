@@ -64,15 +64,8 @@ public class SettingsController {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
         String newFileName = timeStamp + "." + fileType;
 
-        // mime type and file extension type control
-        /*File f = new File(newFileName);
-        String mimetype= new MimetypesFileTypeMap().getContentType(f);
-        String type = mimetype.split("/")[0];
-        if(type.equals("image"))
-            System.out.println("It's an image");
-        else
-            System.out.println("It's NOT an image");*/
 
+        // mime type and file extension type control
         if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
             // Finding user by username
             String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
