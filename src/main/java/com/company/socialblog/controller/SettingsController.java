@@ -7,15 +7,17 @@ import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -36,6 +38,13 @@ public class SettingsController {
 
     @GetMapping("/settings")
     public String settingsPageGet(HttpServletRequest request, Model model) {
+
+        /*// get parameter from request
+        String success = request.getParameter("success");
+        if (success == "1") {
+
+        }*/
+
         // session control
         String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
         if (sessionUsername == null) {
@@ -55,8 +64,15 @@ public class SettingsController {
 
     // Post method for profile photo
     @PostMapping("/settings")
-    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto, HttpServletRequest request,
-       Model model, RedirectAttributes redirectAttributes) {
+    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
+            HttpServletRequest request, Model model) {
+
+        Calendar cal = Calendar.getInstance();
+        LocalDateTime time = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+
+        int year = time.getYear();
+        int month = time.getMonthValue();
+        int day = time.getDayOfMonth();
 
         // Create a new unique file name for each file
         String fileName = profilePhoto.getOriginalFilename();
@@ -64,6 +80,7 @@ public class SettingsController {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
         String newFileName = timeStamp + "." + fileType;
 
+        String dbFileName = year + "/" + month + "/" + day + "/" + newFileName;
 
         // mime type and file extension type control
         if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
@@ -73,20 +90,18 @@ public class SettingsController {
 
             // Upload file, set profile photo and save to database
             try {
-                String resultDate = fileUpload.createUrlPath();
-                fileUpload.uploadFile(profilePhoto, "\\" + newFileName);
-                user.setProfilePhoto(resultDate + newFileName);
+                fileUpload.uploadFile(profilePhoto, "\\" + newFileName, year, month, day);
+                user.setProfilePhoto(dbFileName);
                 userService.saveUser(user);
+                return "redirect:/settings";
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            redirectAttributes.addFlashAttribute("successMessage", "File upload was successful!");
-            return "redirect:/settings";
+            return "settings";
         } else {
             model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
             return "settings";
         }
-
     }
 
     // Post method for settings with ajax
