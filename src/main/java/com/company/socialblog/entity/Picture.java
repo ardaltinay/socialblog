@@ -33,8 +33,8 @@ public class Picture {
     @Column(name = "active")
     private boolean active;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(insertable = false, updatable = false, name = "user_id")
     private User user;
 
     public Picture() {}
