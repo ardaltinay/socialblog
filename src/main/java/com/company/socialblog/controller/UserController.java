@@ -6,34 +6,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ProfileController {
+public class UserController {
 
     private UserService userService;
 
     @Autowired
-    public ProfileController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/profile")
-    public String profilePageGet(Model model, HttpServletRequest request) {
-        // Session
-        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-        if (sessionUsername == null) {
-            return "redirect:/login";
-        }
-        // get user from session
-        User user = userService.findByUsername(sessionUsername);
+    @GetMapping("/user/{username}")
+    public String userPageGet(@PathVariable("username") String username, HttpServletRequest request, Model model) {
 
-        // add user attributes for template to model
-        model.addAttribute("USERNAME", sessionUsername);
+        // finding user from db
+        User user = userService.findByUsername(username);
+        username = user.getUsername();
+
+        model.addAttribute("username", username);
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
 
-        return "profile";
+        return "user-profile";
+
     }
 }

@@ -176,6 +176,10 @@ body {
     display: none;
 }
 
+body > div > main > div {
+    margin-top: 45px;
+}
+
 .footer {
     text-align: center;
 }

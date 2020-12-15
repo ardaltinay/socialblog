@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -43,6 +44,9 @@ public class User {
 
     @Column(name = "profile_photo")
     private String profilePhoto;
+
+    @OneToMany(mappedBy = "user", targetEntity = Picture.class)
+    private Set<Picture> pictures;
 
     public User() {}
 
@@ -107,6 +111,14 @@ public class User {
 
     public String getProfilePhoto() {
         return profilePhoto;
+    }
+
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
     }
 
     public void setProfilePhoto(String profilePhoto) {

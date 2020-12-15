@@ -37,12 +37,11 @@ public class SettingsController {
     }
 
     @GetMapping("/settings")
+    //@ResponseBody
     public String settingsPageGet(HttpServletRequest request, Model model) {
 
-        /*// get parameter from request
-        String success = request.getParameter("success");
-        if (success == "1") {
-
+        /*if (success == "1") {
+            model.addAttribute("successMessage", "The file successfully uploaded!");
         }*/
 
         // session control
@@ -93,11 +92,11 @@ public class SettingsController {
                 fileUpload.uploadFile(profilePhoto, "\\" + newFileName, year, month, day);
                 user.setProfilePhoto(dbFileName);
                 userService.saveUser(user);
-                return "redirect:/settings";
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return "settings";
+            return "redirect:/settings";
         } else {
             model.addAttribute("errorMessage", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
             return "settings";

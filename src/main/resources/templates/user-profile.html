@@ -24,25 +24,16 @@
                     <div class="card" style="width: 15rem;">
                         <img class="card-img-top" th:src="@{${'/static/uploads/' + userProfilePhoto}}" alt="Profile Photo">
                         <div class="card-body">
-                            <p class="card-title"><strong th:text="${USERNAME}"></strong></p>
+                            <p class="card-title"><strong th:text="${username}"></strong></p>
                             <p class="card-text" th:text="${userBiography}"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="row align-items-start">
-                        <form class="form-inline" action="/profile" method="post" enctype="multipart/form-data">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Write a comment" name="photoComment">
-                            <input type="file" name="uploadPhotos">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Save</button>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <div class="card" style="width: 15rem;">
-                            <img src="" class="card-img" alt="Photos">
-                            <div class="card-body">
-                                <p class="card-text">test</p>
-                            </div>
+                    <div class="card" style="width: 15rem;">
+                        <img class="card-img-top" src="" alt="Photos">
+                        <div class="card-body">
+                            <p class="card-text"></p>
                         </div>
                     </div>
                 </div>
