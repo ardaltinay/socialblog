@@ -3,11 +3,12 @@ package com.company.socialblog.entity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -57,6 +58,10 @@ public class User {
         this.password = password;
         this.email = email;
         this.active = true;
+    }
+
+    public void addPicture(Picture picture) {
+        pictures.add(picture);
     }
 
     public int getId() {

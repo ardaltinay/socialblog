@@ -179,6 +179,9 @@ body {
 body > div > main > div {
     margin-top: 45px;
 }
+body > div > main > div > div.col-md-8 > div.row {
+    margin-bottom: 30px;
+}
 
 .footer {
     text-align: center;

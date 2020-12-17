@@ -15,10 +15,6 @@ public class Picture {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id")
-    @NotNull
-    private int userId;
-
     @Column(name = "path")
     @NotNull
     private String path;
@@ -34,13 +30,12 @@ public class Picture {
     private boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(insertable = false, updatable = false, name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Picture() {}
 
-    public Picture(int userId, String path, String text, User user) {
-        this.userId = userId;
+    public Picture(String path, String text, User user) {
         this.path = path;
         this.text = text;
         this.user = user;
@@ -49,14 +44,6 @@ public class Picture {
 
     public int getId() {
         return id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getPath() {
@@ -103,7 +90,6 @@ public class Picture {
     public String toString() {
         return "Picture{" +
                 "id=" + id +
-                ", userId=" + userId +
                 ", path='" + path + '\'' +
                 ", text='" + text + '\'' +
                 ", timestamp=" + timestamp +

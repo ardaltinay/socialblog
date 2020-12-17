@@ -21,10 +21,14 @@ public class UserController {
     }
 
     @GetMapping("/user/{username}")
-    public String userPageGet(@PathVariable("username") String username, HttpServletRequest request, Model model) {
+    public String userPageGet(@PathVariable("username") String username, Model model) {
 
         // finding user from db
         User user = userService.findByUsername(username);
+        if(user == null) {
+            return "global-error";
+        }
+
         username = user.getUsername();
 
         model.addAttribute("username", username);

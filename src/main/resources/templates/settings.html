@@ -25,7 +25,7 @@
                         <p id="formHeader"><b>Settings</b></p>
                         <img th:src="@{${'/static/uploads/' + userProfilePhoto}}" alt="Profile Photo">
                         <label class="formText">Choose your profile photo:</label>
-                        <input type="file" class="form-control-file" name="profilephoto">
+                        <input type="file" class="form-control-file" name="profile-photo">
                         <div th:class="error-field" th:text="${errorMessage}"></div>
                         <!--<div th:class="success-field" th:text="${successMessage}"></div>-->
                         <input type="submit" value="Save" id="photo-save">

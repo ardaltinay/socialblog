@@ -1,22 +1,35 @@
 package com.company.socialblog.controller;
 
+import com.company.socialblog.entity.Picture;
 import com.company.socialblog.entity.User;
+import com.company.socialblog.service.FileUploadService;
+import com.company.socialblog.service.UniqueFileNameService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 
 @Controller
 public class ProfileController {
 
     private UserService userService;
+    private FileUploadService fileUploadService;
+    private UniqueFileNameService fileNameService;
 
     @Autowired
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, FileUploadService fileUploadService, UniqueFileNameService fileNameService) {
         this.userService = userService;
+        this.fileUploadService = fileUploadService;
+        this.fileNameService = fileNameService;
     }
 
     @GetMapping("/profile")
@@ -35,5 +48,52 @@ public class ProfileController {
         model.addAttribute("userBiography", user.getBiography());
 
         return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String profilePagePost(Model model, HttpServletRequest request,
+                  @RequestParam("upload-photo") MultipartFile uploadedPicture) {
+        // Session
+        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
+        if (sessionUsername == null) {
+            return "redirect:/login";
+        }
+        // get user from session
+        User user = userService.findByUsername(sessionUsername);
+        System.out.println(user);
+
+        String fileType = fileNameService.getFileType(uploadedPicture);
+        String fileName = fileNameService.getUniqueFileName(uploadedPicture);
+
+        Calendar cal = Calendar.getInstance();
+        LocalDateTime time = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+
+        int year = time.getYear();
+        int month = time.getMonthValue();
+        int day = time.getDayOfMonth();
+
+        // create a file name for database table
+        String dbFileName = year + "/" + month + "/" + day + "/" + fileName;
+        System.out.println(dbFileName);
+        // get input value from profile
+        String commentPhoto = request.getParameter("photoComment");
+        System.out.println(commentPhoto);
+
+        if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
+            try {
+                fileUploadService.uploadFile(uploadedPicture, "\\" + fileName, year, month, day);
+                user.addPicture(new Picture(dbFileName, commentPhoto, user));
+                System.out.println(user.getPictures());
+
+                return "redirect:/profile";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "profile";
+            }
+        } else {
+            model.addAttribute("fileTypeError", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
+            return "profile";
+        }
+
     }
 }

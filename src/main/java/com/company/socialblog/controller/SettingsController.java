@@ -3,6 +3,7 @@ package com.company.socialblog.controller;
 import com.company.socialblog.entity.User;
 import com.company.socialblog.service.FileUploadService;
 import com.company.socialblog.service.PasswordHashingService;
+import com.company.socialblog.service.UniqueFileNameService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,20 +28,22 @@ public class SettingsController {
     private UserService userService;
     private PasswordHashingService passwordHashingService;
     private FileUploadService fileUpload;
+    private UniqueFileNameService fileNameService;
 
     @Autowired
     public SettingsController(UserService userService, PasswordHashingService passwordHashingService,
-                              FileUploadService fileUpload) {
+                              FileUploadService fileUpload, UniqueFileNameService fileNameService) {
         this.userService = userService;
         this.passwordHashingService = passwordHashingService;
         this.fileUpload = fileUpload;
+        this.fileNameService = fileNameService;
     }
 
     @GetMapping("/settings")
-    //@ResponseBody
     public String settingsPageGet(HttpServletRequest request, Model model) {
 
-        /*if (success == "1") {
+        /*String success = request.getParameter("success");
+        if (success == "1") {
             model.addAttribute("successMessage", "The file successfully uploaded!");
         }*/
 
@@ -63,7 +66,7 @@ public class SettingsController {
 
     // Post method for profile photo
     @PostMapping("/settings")
-    public String settingsPagePost(@RequestParam("profilephoto") MultipartFile profilePhoto,
+    public String settingsPagePost(@RequestParam("profile-photo") MultipartFile profilePhoto,
             HttpServletRequest request, Model model) {
 
         Calendar cal = Calendar.getInstance();
@@ -74,11 +77,12 @@ public class SettingsController {
         int day = time.getDayOfMonth();
 
         // Create a new unique file name for each file
-        String fileName = profilePhoto.getOriginalFilename();
-        String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSSS").format(new Date());
-        String newFileName = timeStamp + "." + fileType;
+        String newFileName = fileNameService.getUniqueFileName(profilePhoto);
 
+        // get file type
+        String fileType = fileNameService.getFileType(profilePhoto);
+
+        // create a file name for database table
         String dbFileName = year + "/" + month + "/" + day + "/" + newFileName;
 
         // mime type and file extension type control
