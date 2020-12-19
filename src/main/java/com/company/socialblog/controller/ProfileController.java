@@ -84,7 +84,6 @@ public class ProfileController {
                 fileUploadService.uploadFile(uploadedPicture, "\\" + fileName, year, month, day);
                 user.addPicture(new Picture(dbFileName, commentPhoto, user));
                 System.out.println(user.getPictures());
-
                 return "redirect:/profile";
             } catch (Exception e) {
                 e.printStackTrace();
