@@ -1,6 +1,7 @@
 package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
+import com.company.socialblog.exception.UserNotFoundException;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,12 +27,11 @@ public class UserController {
         // finding user from db
         User user = userService.findByUsername(username);
         if(user == null) {
-            return "global-error";
+            throw new UserNotFoundException("Username: " + username + " not found.");
+            //return "global-error"; // 404 response donmeli
         }
 
-        username = user.getUsername();
-
-        model.addAttribute("username", username);
+        model.addAttribute("username", user.getUsername());
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
 
