@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card" style="width: 15rem;">
-                        <img class="card-img-top" th:src="@{${'/static/uploads/' + userProfilePhoto}}" alt="Profile Photo">
+                        <img th:if="${userProfilePhoto}" class="card-img-top" th:src="@{${'/static/uploads/' + userProfilePhoto}}" alt="Profile Photo">
                         <div class="card-body">
                             <p class="card-title"><strong th:text="${USERNAME}"></strong></p>
                             <p class="card-text" th:text="${userBiography}"></p>
@@ -37,6 +37,7 @@
                             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Save</button>
                         </form>
                     </div>
+                    <div th:text="${fileTypeError}" class="error-field"></div>
                     <div class="row">
                         <div class="card" style="width: 15rem;">
                             <img src="" class="card-img" alt="Photos">
