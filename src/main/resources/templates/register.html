@@ -39,6 +39,7 @@
                 </span>
                 <p class="error-field" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                 <input type="submit" value="Register">
+                <a href="/login" class="text-muted text-decoration-none">Already have an account? Click to login</a>
             </form>
         </div>
         <footer th:include="footer :: footerfragment" class="footer"></footer>
