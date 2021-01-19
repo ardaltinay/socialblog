@@ -23,7 +23,7 @@ import java.util.Calendar;
 @Service
 public class FileUploadService {
 
-    String path = "C:\\Users\\Arda\\Desktop\\repositories\\socialblog\\src\\main\\resources\\static\\uploads\\";
+    String path = "D:\\social-blog-uploads\\";
 
     public void uploadFile(MultipartFile file, String newFileName, int year, int month, int day) throws IOException {
         String filePath = year + "\\" + month + "\\" + day + "\\";
