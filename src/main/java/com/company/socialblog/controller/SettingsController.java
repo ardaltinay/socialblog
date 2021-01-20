@@ -1,10 +1,7 @@
 package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
-import com.company.socialblog.service.FileUploadService;
-import com.company.socialblog.service.PasswordHashingService;
-import com.company.socialblog.service.UniqueFileNameService;
-import com.company.socialblog.service.UserService;
+import com.company.socialblog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.HashMap;
 
 @Controller
@@ -27,32 +21,30 @@ public class SettingsController {
     private PasswordHashingService passwordHashingService;
     private FileUploadService fileUpload;
     private UniqueFileNameService fileNameService;
+    private FindUserFromSessionService findUserService;
+    private FileTypeControlService fileTypeControlService;
 
     @Autowired
     public SettingsController(UserService userService, PasswordHashingService passwordHashingService,
-                              FileUploadService fileUpload, UniqueFileNameService fileNameService) {
+                              FileUploadService fileUpload, UniqueFileNameService fileNameService,
+                              FindUserFromSessionService findUserService,
+                              FileTypeControlService fileTypeControlService) {
         this.userService = userService;
         this.passwordHashingService = passwordHashingService;
         this.fileUpload = fileUpload;
         this.fileNameService = fileNameService;
+        this.findUserService = findUserService;
+        this.fileTypeControlService = fileTypeControlService;
     }
 
     @GetMapping("/settings")
     public String settingsPageGet(HttpServletRequest request, Model model) {
 
-        /*String success = request.getParameter("success");
-        if (success == "1") {
-            model.addAttribute("successMessage", "The file successfully uploaded!");
-        }*/
-
         // session control
-        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-        if (sessionUsername == null) {
+        User user = findUserService.findUser(request);
+        if(user == null) {
             return "redirect:/login";
         }
-        // finding user by username
-        User user = userService.findByUsername(sessionUsername);
-
         // add user attributes for template to model
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("userEmail", user.getEmail());
@@ -66,34 +58,20 @@ public class SettingsController {
     @PostMapping("/settings")
     public String settingsPagePost(@RequestParam("profile-photo") MultipartFile profilePhoto,
             HttpServletRequest request, Model model) {
-
-        Calendar cal = Calendar.getInstance();
-        LocalDateTime time = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
-
-        int year = time.getYear();
-        int month = time.getMonthValue();
-        int day = time.getDayOfMonth();
-
-        // Create a new unique file name for each file
-        String newFileName = fileNameService.getUniqueFileName(profilePhoto);
-
-        // get file type
-        String fileType = fileNameService.getFileType(profilePhoto);
+        // get user
+        User user = findUserService.findUser(request);
 
         // create a file name for database table
-        String dbFileName = year + "/" + month + "/" + day + "/" + newFileName;
+        String fileName = fileNameService.getUniqueFileName(profilePhoto);
+        String prefixFileName = fileNameService.getPrefixForDBFileName();
 
-        // mime type and file extension type control
-        if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
-            // Finding user by username
-            String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-            User user = userService.findByUsername(sessionUsername);
-
-            // Upload file, set profile photo and save to database
+        // file type control
+        boolean isValidFileType = fileTypeControlService.fileTypeControl(profilePhoto);
+        if (isValidFileType) {
+            user.setProfilePhoto(prefixFileName + fileName);
+            userService.saveUser(user);
             try {
-                fileUpload.uploadFile(profilePhoto, "\\" + newFileName);
-                user.setProfilePhoto(dbFileName);
-                userService.saveUser(user);
+                fileUpload.uploadFile(profilePhoto, "\\" + prefixFileName + fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,11 +91,8 @@ public class SettingsController {
         int message;
         HashMap<String, Integer> map = new HashMap<>();
 
-        // session
-        String sessionUsername = (String) request.getSession().getAttribute("USERNAME");
-        if (sessionUsername == null) {
-            response = 0;
-        }
+        // get user
+        User user = findUserService.findUser(request);
 
         // get type from jquery post request
         String type = request.getParameter("type");
@@ -133,9 +108,6 @@ public class SettingsController {
                     map.put("ResponseMessage", message);
                     return map;
                 }
-
-                // finding user by username
-                User user = userService.findByUsername(sessionUsername);
 
                 // set user biography and save db
                 try {
@@ -162,8 +134,6 @@ public class SettingsController {
                     return map;
                 }
 
-                user = userService.findByUsername(sessionUsername);
-
                 try {
                     user.setEmail(email);
                     userService.saveUser(user);
@@ -184,7 +154,7 @@ public class SettingsController {
 
                 String hashedPassword = passwordHashingService.passwordHashing(currentPass);
 
-                user = userService.findByUsernameAndPassword(sessionUsername, hashedPassword);
+                user = userService.findByUsernameAndPassword(user.getUsername(), hashedPassword);
                 if (user == null) {
                     response = 0;
                     message = 1;
@@ -217,8 +187,6 @@ public class SettingsController {
 
             case "delete":
                 int disableAccount = 1;
-
-                user = userService.findByUsername(sessionUsername);
 
                 try {
                     user.setActive(false);

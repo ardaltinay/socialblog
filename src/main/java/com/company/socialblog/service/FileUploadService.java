@@ -26,20 +26,5 @@ public class FileUploadService {
         }
 
         file.transferTo(Paths.get(dir  + newFileName));
-
-        /*
-        FileNameMap fileNameMap = URLConnection.getFileNameMap();
-        String mimeType = fileNameMap.getContentTypeFor(dir  + newFileName);
-        System.out.println(mimeType);
-
-        File f = new File(String.valueOf(Paths.get(dir  + newFileName)));
-        String mimetype= new MimetypesFileTypeMap().getContentType(f);
-        String type = mimetype.split("/")[0];
-        System.out.println(type);
-        if(type.equals("image"))
-            System.out.println("It's an image");
-        else
-            System.out.println("It's NOT an image");
-        */
     }
 }

@@ -23,18 +23,21 @@ public class ProfileController {
     private UniqueFileNameService fileNameService;
     private PictureService pictureService;
     private FileTypeControlService fileTypeControlService;
+    private FindUserFromSessionService findUserService;
 
     @Autowired
     public ProfileController(UserService userService,
                              FileUploadService fileUploadService,
                              UniqueFileNameService fileNameService,
                              PictureService pictureService,
-                             FileTypeControlService fileTypeControlService) {
+                             FileTypeControlService fileTypeControlService,
+                             FindUserFromSessionService findUserService) {
         this.userService = userService;
         this.fileUploadService = fileUploadService;
         this.fileNameService = fileNameService;
         this.pictureService = pictureService;
         this.fileTypeControlService = fileTypeControlService;
+        this.findUserService = findUserService;
     }
 
     @GetMapping("/profile")
@@ -61,13 +64,11 @@ public class ProfileController {
     @PostMapping("/profile")
     public String profilePagePost(Model model, HttpServletRequest request,
                   @RequestParam("upload-photo") MultipartFile uploadedPicture) {
-        // Session
-        String sessionUsername = (String) request.getSession().getAttribute(USERNAME);
-        if (sessionUsername == null) {
-            return "redirect:/login";
+        // session control
+        User user = findUserService.findUser(request);
+        if(user == null) {
+            return "redirect:/profile";
         }
-        // get user from session
-        User user = userService.findByUsername(sessionUsername);
 
         // create a file name for database table
         String fileName = fileNameService.getUniqueFileName(uploadedPicture);
