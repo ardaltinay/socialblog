@@ -5,6 +5,8 @@ import com.company.socialblog.entity.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PictureServiceImpl implements PictureService {
 
@@ -14,5 +16,10 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public void savePicture(Picture picture) {
         pictureRepository.save(picture);
+    }
+
+    @Override
+    public List<Picture> getPictures() {
+        return pictureRepository.findAll();
     }
 }

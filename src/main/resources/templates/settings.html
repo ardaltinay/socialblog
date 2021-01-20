@@ -23,7 +23,7 @@
                 <div class="box box-settings">
                     <form action="/settings" method="post" enctype="multipart/form-data">
                         <p id="formHeader"><b>Settings</b></p>
-                        <img th:if="${userProfilePhoto}" th:src="@{${'/static/uploads/' + userProfilePhoto}}" alt="Profile Photo">
+                        <img th:if="${userProfilePhoto}" th:src="@{'/myimages/' + ${userProfilePhoto}}" alt="Profile Photo">
                         <label class="formText">Choose your profile photo:</label>
                         <input type="file" class="form-control-file" name="profile-photo">
                         <div th:class="error-field" th:text="${errorMessage}"></div>

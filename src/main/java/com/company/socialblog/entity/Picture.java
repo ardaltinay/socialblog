@@ -1,5 +1,9 @@
 package com.company.socialblog.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,6 +11,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@Slf4j
 @Entity
 @Table(name = "picture")
 public class Picture implements Serializable {
@@ -34,57 +41,12 @@ public class Picture implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Picture() {}
-
     public Picture(String path, String text, User user) {
+        log.info("picture has been added.");
         this.path = path;
         this.text = text;
         this.user = user;
         this.active = true;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override

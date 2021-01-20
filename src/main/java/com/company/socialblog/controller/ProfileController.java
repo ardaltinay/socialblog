@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.List;
 
 @Controller
 public class ProfileController {
@@ -49,10 +50,13 @@ public class ProfileController {
         // get user from session
         User user = userService.findByUsername(sessionUsername);
 
+        List<Picture> pictures = pictureService.getPictures();
+
         // add user attributes for template to model
         model.addAttribute(USERNAME, sessionUsername);
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
+        model.addAttribute("pictures", pictures);
 
         return "profile";
     }

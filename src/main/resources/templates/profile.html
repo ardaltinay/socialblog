@@ -39,10 +39,10 @@
                     </div>
                     <div th:text="${fileTypeError}" class="error-field"></div>
                     <div class="row">
-                        <div class="card" style="width: 15rem;">
-                            <img src="" class="card-img" alt="Photos">
+                        <div class="card" style="width: 15rem;" th:each="picture : ${pictures}">
+                            <img th:src="@{'/myimages/' + ${picture.getPath()}}" class="card-img" alt="Photos">
                             <div class="card-body">
-                                <p class="card-text">test</p>
+                                <p class="card-text" th:text="${picture.getText()}"></p>
                             </div>
                         </div>
                     </div>
