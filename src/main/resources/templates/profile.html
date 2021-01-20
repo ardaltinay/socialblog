@@ -21,10 +21,10 @@
         <main>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card" style="width: 15rem;">
+                    <div class="card">
                         <img th:if="${userProfilePhoto}" class="card-img-top" th:src="@{'/myimages/' + ${userProfilePhoto}}" alt="Profile Photo">
                         <div class="card-body">
-                            <p class="card-title"><strong th:text="${USERNAME}"></strong></p>
+                            <p class="card-title"><strong th:text="${USERNAME.toUpperCase()}"></strong></p>
                             <p class="card-text" th:text="${userBiography}"></p>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                     </div>
                     <div th:text="${fileTypeError}" class="error-field"></div>
                     <div class="row">
-                        <div class="card" style="width: 15rem;" th:each="picture : ${pictures}">
+                        <div class="card" th:each="picture : ${pictures}">
                             <img th:src="@{'/myimages/' + ${picture.getPath()}}" class="card-img" alt="Photos">
                             <div class="card-body">
                                 <p class="card-text" th:text="${picture.getText()}"></p>

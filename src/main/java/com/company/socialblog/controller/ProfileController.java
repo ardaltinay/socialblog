@@ -88,7 +88,6 @@ public class ProfileController {
         System.out.println(dbFileName);
         // get input value from profile
         String commentPhoto = request.getParameter("photoComment");
-        System.out.println(commentPhoto);
         Picture picture = new Picture(dbFileName, commentPhoto, user);
         pictureService.savePicture(picture);
         user.addPicture(picture);
@@ -97,7 +96,6 @@ public class ProfileController {
         if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
             try {
                 fileUploadService.uploadFile(uploadedPicture, "\\" + fileName, year, month, day);
-                System.out.println(user.getPictures());
                 return "redirect:/profile";
             } catch (Exception e) {
                 e.printStackTrace();
