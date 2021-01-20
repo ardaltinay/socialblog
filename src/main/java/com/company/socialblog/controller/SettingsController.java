@@ -91,7 +91,7 @@ public class SettingsController {
 
             // Upload file, set profile photo and save to database
             try {
-                fileUpload.uploadFile(profilePhoto, "\\" + newFileName, year, month, day);
+                fileUpload.uploadFile(profilePhoto, "\\" + newFileName);
                 user.setProfilePhoto(dbFileName);
                 userService.saveUser(user);
             } catch (Exception e) {

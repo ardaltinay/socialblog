@@ -1,32 +1,23 @@
 package com.company.socialblog.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.FileNameMap;
-import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-
-
 
 @Service
 public class FileUploadService {
 
-    String path = "D:\\social-blog-uploads\\";
+    @Autowired
+    private UniqueFileNameService uniqueFileNameService;
 
-    public void uploadFile(MultipartFile file, String newFileName, int year, int month, int day) throws IOException {
-        String filePath = year + "\\" + month + "\\" + day + "\\";
+    public void uploadFile(MultipartFile file, String newFileName) throws IOException {
+        String path = "D:\\social-blog-uploads\\";
+
+        String filePath = uniqueFileNameService.getPrefixForFilePAth();
 
         new File(path + filePath).mkdirs();
         File dir = new File(path + filePath);
@@ -48,8 +39,7 @@ public class FileUploadService {
         if(type.equals("image"))
             System.out.println("It's an image");
         else
-            System.out.println("It's NOT an image");*/
-
+            System.out.println("It's NOT an image");
+        */
     }
-
 }

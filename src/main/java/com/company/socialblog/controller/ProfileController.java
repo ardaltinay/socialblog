@@ -2,10 +2,7 @@ package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.Picture;
 import com.company.socialblog.entity.User;
-import com.company.socialblog.service.FileUploadService;
-import com.company.socialblog.service.PictureService;
-import com.company.socialblog.service.UniqueFileNameService;
-import com.company.socialblog.service.UserService;
+import com.company.socialblog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -28,16 +22,19 @@ public class ProfileController {
     private FileUploadService fileUploadService;
     private UniqueFileNameService fileNameService;
     private PictureService pictureService;
+    private FileTypeControlService fileTypeControlService;
 
     @Autowired
     public ProfileController(UserService userService,
                              FileUploadService fileUploadService,
                              UniqueFileNameService fileNameService,
-                             PictureService pictureService) {
+                             PictureService pictureService,
+                             FileTypeControlService fileTypeControlService) {
         this.userService = userService;
         this.fileUploadService = fileUploadService;
         this.fileNameService = fileNameService;
         this.pictureService = pictureService;
+        this.fileTypeControlService = fileTypeControlService;
     }
 
     @GetMapping("/profile")
@@ -71,40 +68,29 @@ public class ProfileController {
         }
         // get user from session
         User user = userService.findByUsername(sessionUsername);
-        System.out.println(user);
-
-        String fileType = fileNameService.getFileType(uploadedPicture);
-
-        Calendar cal = Calendar.getInstance();
-        LocalDateTime time = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
-
-        String fileName = fileNameService.getUniqueFileName(uploadedPicture);
-        int year = time.getYear();
-        int month = time.getMonthValue();
-        int day = time.getDayOfMonth();
 
         // create a file name for database table
-        String dbFileName = year + "/" + month + "/" + day + "/" + fileName;
-        System.out.println(dbFileName);
-        // get input value from profile
-        String commentPhoto = request.getParameter("photoComment");
-        Picture picture = new Picture(dbFileName, commentPhoto, user);
-        pictureService.savePicture(picture);
-        user.addPicture(picture);
-        userService.saveUser(user);
+        String fileName = fileNameService.getUniqueFileName(uploadedPicture);
+        String prefixFileName = fileNameService.getPrefixForDBFileName();
 
-        if (fileType.equals("jpg") || fileType.equals("jpeg") || fileType.equals("png")) {
+        // get input comment value from profile
+        String commentPhoto = request.getParameter("photoComment");
+
+        Picture picture = new Picture(prefixFileName + fileName, commentPhoto, user);
+        pictureService.savePicture(picture);
+
+        // file type control
+        boolean isValidFileType = fileTypeControlService.fileTypeControl(uploadedPicture);
+        if(isValidFileType) {
             try {
-                fileUploadService.uploadFile(uploadedPicture, "\\" + fileName, year, month, day);
-                return "redirect:/profile";
+                fileUploadService.uploadFile(uploadedPicture, "\\" + fileName);
             } catch (Exception e) {
                 e.printStackTrace();
-                return "profile";
             }
+            return "redirect:/profile";
         } else {
             model.addAttribute("fileTypeError", "Unsupported file format (Must be 'jpg', 'jpeg' or 'png')");
             return "profile";
         }
-
     }
 }

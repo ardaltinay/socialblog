@@ -1,5 +1,8 @@
 package com.company.socialblog.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,7 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
+@Slf4j
 @Table(name = "user")
 public class User implements Serializable {
 
@@ -53,89 +59,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<Picture> pictures;
 
-    public User() {}
-
     public User(String username, String password, String email) {
+        log.info("User has been added.");
         this.username = username;
         this.password = password;
         this.email = email;
         this.active = true;
-    }
-
-    public void addPicture(Picture picture) {
-        if(pictures == null) {
-            pictures = new ArrayList<>();
-        }
-        pictures.add(picture);
-        // picture.setUser(this);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getBiography() {
-        return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getProfilePhoto() {
-        return profilePhoto;
-    }
-
-    public List<Picture> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<Picture> pictures) {
-        this.pictures = pictures;
-    }
-
-    public void setProfilePhoto(String profilePhoto) {
-        this.profilePhoto = profilePhoto;
     }
 
     @Override
