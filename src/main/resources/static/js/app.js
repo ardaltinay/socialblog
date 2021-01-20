@@ -38,6 +38,7 @@ $("#pass-save").click(function () {
     $(".notValid-pass").hide();
     $(".success-pass").hide();
     $(".fail-pass").hide();
+    $(".currentFail-pass").hide();
     $(".notMatch-pass").hide();
     // get values from html form
     let current_pass = $("#current-pass").val();
@@ -57,7 +58,9 @@ $("#pass-save").click(function () {
         } else {
             if(data.ResponseMessage == 2) {
                 $(".notValid-pass").show();
-            } else {
+            } else if (data.ResponseMessage == 1){
+                $(".currentFail-pass").show();
+            } else if(data.ResponseMessage == 3){
                 $(".fail-pass").show();
             }
         }

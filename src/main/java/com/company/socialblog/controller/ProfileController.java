@@ -42,18 +42,16 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String profilePageGet(Model model, HttpServletRequest request) {
-        // Session
-        String sessionUsername = (String) request.getSession().getAttribute(USERNAME);
-        if (sessionUsername == null) {
+        // session control
+        User user = findUserService.findUser(request);
+        if(user == null) {
             return "redirect:/login";
         }
-        // get user from session
-        User user = userService.findByUsername(sessionUsername);
 
         List<Picture> pictures = pictureService.getPictures();
 
         // add user attributes for template to model
-        model.addAttribute(USERNAME, sessionUsername);
+        model.addAttribute(USERNAME, user.getUsername());
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("pictures", pictures);
@@ -64,11 +62,8 @@ public class ProfileController {
     @PostMapping("/profile")
     public String profilePagePost(Model model, HttpServletRequest request,
                   @RequestParam("upload-photo") MultipartFile uploadedPicture) {
-        // session control
+        // get user
         User user = findUserService.findUser(request);
-        if(user == null) {
-            return "redirect:/profile";
-        }
 
         // create a file name for database table
         String fileName = fileNameService.getUniqueFileName(uploadedPicture);

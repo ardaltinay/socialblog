@@ -23,18 +23,21 @@ public class SettingsController {
     private UniqueFileNameService fileNameService;
     private FindUserFromSessionService findUserService;
     private FileTypeControlService fileTypeControlService;
+    private AjaxSettingsPostRequestService ajaxRequestService;
 
     @Autowired
     public SettingsController(UserService userService, PasswordHashingService passwordHashingService,
                               FileUploadService fileUpload, UniqueFileNameService fileNameService,
                               FindUserFromSessionService findUserService,
-                              FileTypeControlService fileTypeControlService) {
+                              FileTypeControlService fileTypeControlService,
+                              AjaxSettingsPostRequestService ajaxRequestService) {
         this.userService = userService;
         this.passwordHashingService = passwordHashingService;
         this.fileUpload = fileUpload;
         this.fileNameService = fileNameService;
         this.findUserService = findUserService;
         this.fileTypeControlService = fileTypeControlService;
+        this.ajaxRequestService = ajaxRequestService;
     }
 
     @GetMapping("/settings")
@@ -71,7 +74,7 @@ public class SettingsController {
             user.setProfilePhoto(prefixFileName + fileName);
             userService.saveUser(user);
             try {
-                fileUpload.uploadFile(profilePhoto, "\\" + prefixFileName + fileName);
+                fileUpload.uploadFile(profilePhoto, "\\" + fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -86,122 +89,23 @@ public class SettingsController {
     @PostMapping("/settings/ajax")
     @ResponseBody
     public HashMap<String, Integer> settingsPagePostAjax(HttpServletRequest request) {
-
-        int response = 1;
-        int message;
         HashMap<String, Integer> map = new HashMap<>();
-
-        // get user
-        User user = findUserService.findUser(request);
 
         // get type from jquery post request
         String type = request.getParameter("type");
         // type control
         switch (type) {
             case "bio":
-                // get request from html form
-                String biography = request.getParameter("biography");
-                if (biography == null) {
-                    response = 0;
-                    message = 1;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-
-                // set user biography and save db
-                try {
-                    user.setBiography(biography);
-                    userService.saveUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response = 0;
-                    message = 2;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-                map.put("StatusCode", response);
-                return map;
+                return ajaxRequestService.bioRequestHandler(request);
 
             case "email":
-                String email = request.getParameter("email");
-                if (email == null) {
-                    response = 0;
-                    message = 1;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-
-                try {
-                    user.setEmail(email);
-                    userService.saveUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response = 0;
-                    message = 2;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-                map.put("StatusCode", response);
-                return map;
+                return ajaxRequestService.emailRequestHandler(request);
 
             case "pass":
-                String currentPass = request.getParameter("currentPassword");
-                String newPass = request.getParameter("newPassword");
-
-                String hashedPassword = passwordHashingService.passwordHashing(currentPass);
-
-                user = userService.findByUsernameAndPassword(user.getUsername(), hashedPassword);
-                if (user == null) {
-                    response = 0;
-                    message = 1;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-
-                if (newPass == null || newPass.length() < 8) {
-                    response = 0;
-                    message = 2;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-
-                try {
-                    user.setPassword(passwordHashingService.passwordHashing(newPass));
-                    userService.saveUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response = 0;
-                    message = 3;
-                    map.put("StatusCode", response);
-                    map.put("ResponseMessage", message);
-                    return map;
-                }
-                map.put("StatusCode", response);
-                return map;
+                return ajaxRequestService.passwordRequestHandler(request);
 
             case "delete":
-                int disableAccount = 1;
-
-                try {
-                    user.setActive(false);
-                    userService.saveUser(user);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    disableAccount = 0;
-                    map.put("DisableAccount", disableAccount);
-                    return map;
-                }
-
-                request.getSession().removeAttribute("USERNAME");
-
-                map.put("DisableAccount", disableAccount);
-                return map;
+                return ajaxRequestService.deleteRequestHandler(request);
 
             default:
                 map.put("StatusCode", 0);
