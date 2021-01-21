@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class SettingsController {
 
     private UserService userService;
-    private PasswordHashingService passwordHashingService;
     private FileUploadService fileUpload;
     private UniqueFileNameService fileNameService;
     private FindUserFromSessionService findUserService;
@@ -26,13 +25,13 @@ public class SettingsController {
     private AjaxSettingsPostRequestService ajaxRequestService;
 
     @Autowired
-    public SettingsController(UserService userService, PasswordHashingService passwordHashingService,
-                              FileUploadService fileUpload, UniqueFileNameService fileNameService,
+    public SettingsController(UserService userService,
+                              FileUploadService fileUpload,
+                              UniqueFileNameService fileNameService,
                               FindUserFromSessionService findUserService,
                               FileTypeControlService fileTypeControlService,
                               AjaxSettingsPostRequestService ajaxRequestService) {
         this.userService = userService;
-        this.passwordHashingService = passwordHashingService;
         this.fileUpload = fileUpload;
         this.fileNameService = fileNameService;
         this.findUserService = findUserService;
