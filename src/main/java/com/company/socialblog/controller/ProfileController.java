@@ -54,6 +54,7 @@ public class ProfileController {
         model.addAttribute(USERNAME, user.getUsername());
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
+        model.addAttribute("userEmail", user.getEmail());
         model.addAttribute("pictures", pictures);
 
         return "profile";
