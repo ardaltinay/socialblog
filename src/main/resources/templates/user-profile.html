@@ -11,6 +11,9 @@
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <li class="nav-item">
+                    <a class="nav-link" href="/profile">Profile</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/settings">Settings</a>
                 </li>
                 <li class="nav-item">
@@ -21,19 +24,24 @@
         <main>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card" style="width: 15rem;">
+                    <h3>User Details</h3>
+                    <div class="card">
                         <img th:if="${userProfilePhoto}" class="card-img-top" th:src="@{'/myimages/' + ${userProfilePhoto}}" alt="Profile Photo">
                         <div class="card-body">
-                            <p class="card-title"><strong th:text="${username}"></strong></p>
-                            <p class="card-text" th:text="${userBiography}"></p>
+                            <p class="card-title"><strong th:text="|Username: ${username}|"></strong></p>
+                            <p class="card-text" th:text="|Email: ${userEmail}|"></p>
+                            <p class="card-text" th:text="|Biography: ${userBiography}|"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="card" style="width: 15rem;">
-                        <img class="card-img-top" src="" alt="Photos">
-                        <div class="card-body">
-                            <p class="card-text"></p>
+                    <h3>User Photos</h3>
+                    <div class="row">
+                        <div class="card" th:each="picture : ${pictures}">
+                            <img th:src="@{'/myimages/' + ${picture.getPath()}}" class="card-img" alt="Photos">
+                            <div class="card-body">
+                                <p class="card-text" th:text="${picture.getText()}"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
