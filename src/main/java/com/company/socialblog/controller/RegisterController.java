@@ -64,7 +64,7 @@ public class RegisterController {
             if (user.getUsername().equals(username)) {
                 model.addAttribute("message", 3);
                 return "register";
-            } else if (user.getEmail().equals(email)){
+            } else if (user.getEmail().equals(email)) {
                 model.addAttribute("message", 4);
                 return "register";
             }

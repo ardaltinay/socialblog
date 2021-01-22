@@ -48,14 +48,12 @@ public class ProfileController {
             return "redirect:/login";
         }
 
-        List<Picture> pictures = pictureService.getPictures();
-
         // add user attributes for template to model
         model.addAttribute(USERNAME, user.getUsername());
         model.addAttribute("userProfilePhoto", user.getProfilePhoto());
         model.addAttribute("userBiography", user.getBiography());
         model.addAttribute("userEmail", user.getEmail());
-        model.addAttribute("pictures", pictures);
+        model.addAttribute("pictures", user.getPictures());
 
         return "profile";
     }

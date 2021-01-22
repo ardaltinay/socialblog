@@ -26,7 +26,6 @@ public class UserController {
         User user = userService.findByUsername(username);
         if(user == null) {
             throw new UserNotFoundException("Username: " + username + " not found.");
-            //return "global-error"; // 404 response donmeli
         }
 
         model.addAttribute("username", user.getUsername());
