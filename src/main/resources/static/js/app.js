@@ -112,4 +112,29 @@ $("#button-yes").click(function () {
     })
 })
 
+let pictureId = $(".card-img").attr("data");
+$.post("/like",  { picId: pictureId }).done(function(data) {
+    console.log(data)
+})
+
+// like button changing when user click
+/*const likeButton = $("#like-button");
+let hasLiked;
+likeButton.click(() => {
+    hasLiked = likeButton.hasClass("fas");
+    if(hasLiked) {
+        likeButton.removeClass("fas");
+        likeButton.addClass("far");
+    } else {
+        likeButton.removeClass("far");
+        likeButton.addClass("fas");
+    }
+    // send controller to like button data
+    $.post("/like",  { hasLiked: !hasLiked }).done(function(data) {
+        console.log(data.hasLiked)
+    })
+})*/
+
+
+
 

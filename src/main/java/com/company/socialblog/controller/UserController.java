@@ -2,6 +2,7 @@ package com.company.socialblog.controller;
 
 import com.company.socialblog.entity.User;
 import com.company.socialblog.exception.UserNotFoundException;
+import com.company.socialblog.service.FindUserFromSessionService;
 import com.company.socialblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,21 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     private UserService userService;
+    private FindUserFromSessionService findUserFromSessionService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          FindUserFromSessionService findUserFromSessionService) {
         this.userService = userService;
+        this.findUserFromSessionService = findUserFromSessionService;
     }
 
     @GetMapping("/user/{username}")
-    public String userPageGet(@PathVariable("username") String username, Model model, HttpServletRequest request) {
+    public String userPageGet(@PathVariable("username") String username, Model model,HttpServletRequest request) {
+        User sessionUser = findUserFromSessionService.findUser(request);
+        if(sessionUser == null) {
+            return "redirect:/login?path=/user/" + username;
+        }
         // finding user from db
         User user = userService.findByUsername(username);
         if(user == null) {

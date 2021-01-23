@@ -16,7 +16,7 @@
             </ul>
         </nav>
         <div class="form-container">
-            <form class="box" action="/login" method="post">
+            <form class="box" th:action="${param.path} ? '/login?path=' + ${param.path} : '/login'" method="post">
                 <p class="text-muted" id="formHeader"><b>Login</b></p>
                 <p class="text-muted"> Please enter your username and password!</p>
                 <div th:switch="${message}">

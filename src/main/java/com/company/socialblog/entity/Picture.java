@@ -1,6 +1,5 @@
 package com.company.socialblog.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class Picture implements Serializable {
     private String text;
 
     @Column(name = "timestamp")
-    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
     @Column(name = "active")
@@ -41,12 +41,24 @@ public class Picture implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_picture",
+            joinColumns = @JoinColumn(name = "picture_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> likedUsers;
+
     public Picture(String path, String text, User user) {
         log.info("picture has been added.");
         this.path = path;
         this.text = text;
         this.user = user;
         this.active = true;
+    }
+
+    public void addLikedUser(User testUser) {
+        likedUsers.add(testUser);
     }
 
     @Override

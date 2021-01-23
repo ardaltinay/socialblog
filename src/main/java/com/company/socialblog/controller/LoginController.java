@@ -40,6 +40,7 @@ public class LoginController {
         // get value from login form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String path = request.getParameter("path");
 
         // hashing password from passwordHashingService
         String hashedPassword = passwordHashingService.passwordHashing(password);
@@ -51,6 +52,9 @@ public class LoginController {
                 // Session
                 if (user.getUsername() != null) {
                     request.getSession().setAttribute("USERNAME", user.getUsername());
+                }
+                if (path != null) {
+                    return "redirect:" + path;
                 }
                 return "redirect:/profile";
             }

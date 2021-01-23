@@ -8,5 +8,7 @@ public interface PictureService {
 
     void savePicture(Picture picture);
 
+    Picture findPictureById(int id);
+
     List<Picture> getPictures();
 }

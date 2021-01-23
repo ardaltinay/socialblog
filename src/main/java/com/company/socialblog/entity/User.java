@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class User implements Serializable {
     private boolean active;
 
     @Column(name = "timestamp")
-    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
     @Column(name = "profile_photo")
@@ -58,6 +57,9 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Picture> pictures;
+
+    @ManyToMany(mappedBy = "likedUsers")
+    private List<Picture> likedPictures;
 
     public User(String username, String password, String email) {
         log.info("User has been added.");
