@@ -69,10 +69,6 @@ public class User implements Serializable {
         this.active = true;
     }
 
-    public void addLikedPicture(Picture p) {
-        likedPictures.add(p);
-    }
-
     @Override
     public String toString() {
         return "User{" +

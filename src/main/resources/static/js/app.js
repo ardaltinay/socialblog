@@ -113,9 +113,14 @@ $("#button-yes").click(function () {
 })
 
 let pictureId = $(".card-img").attr("data");
-$.post("/like",  { picId: pictureId }).done(function(data) {
+$.post("/like?type=get", { picId: pictureId }).done(function(data) {
     console.log(data)
-})
+});
+
+/* let pictureId = $(".card-img").attr("data");
+$.post("/like?type=set", { picId: pictureId }).done(function(data) {
+    console.log(data)
+}); */
 
 // like button changing when user click
 /*const likeButton = $("#like-button");
