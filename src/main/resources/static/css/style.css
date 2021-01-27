@@ -235,7 +235,7 @@ body > div > main > div > div.col-md-8 > div > div > div > p {
     margin: 0;
 }
 
-body > div > main > div > div.col-md-8 > div > div > div > span > i {
+body > div > main > div > div.col-md-8 > div > div > div > a > i {
     font-size: 20px;
     color: blue;
     cursor: pointer;

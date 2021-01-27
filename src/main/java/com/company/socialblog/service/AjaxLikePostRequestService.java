@@ -59,7 +59,6 @@ public class AjaxLikePostRequestService {
             map.put("status", 1);
             try{
                 pic.addLikedUser(user);
-
                 // pic.setLikedUsers(); // denenecek calisma prensibi olarak
                 pictureService.savePicture(pic);
             } catch (Exception e) {

@@ -112,30 +112,47 @@ $("#button-yes").click(function () {
     })
 })
 
-$(".card-img").each(function( index ) {
-
-    $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
-        if (data["isLiked"] == 1) {
-            $(this).next().children( "span" ).children("i").removeClass("far").addClass("fas");
-
-        }
+// when document load
+$(function() {
+    $(".card-img").each(function() {
+        $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
+            if (data["isLiked"] == 1) {
+                $(this).next().children( "a" ).children("i").removeClass("far").addClass("fas");
+            }
+        });
     });
-
 });
 
 likeButton = $(".fa-thumbs-up");
+picId = likeButton.parent().parent().prev().attr("data");
 
 likeButton.click(function() {
-    $(this).hide();
+    let hasLiked = $(this).hasClass("fas");
+    if(!hasLiked) {
+        $.post("/like?type=set", { picId: picId }).done((data) => {
+            console.log(data);
+            if(data["status"] == 1) {
+                $(this).removeClass("far").addClass("fas");
+            }
+        })
+    } else {
+        $.post("/like?type=set", { picId: picId }).done((data) => {
+            console.log(data);
+            if(data["status"] == 1) {
+                $(this).removeClass("fas").addClass("far");
+            }
+        })
+        //$(this).removeClass("far").addClass("fas");
+    }
 });
 
 //let pictureId = $(".card-img").attr("data")
-$.post("/like?type=set", { picId: pictureId }).done(function(data) {
+/*$.post("/like?type=set", { picId: pictureId }).done(function(data) {
     console.log(data)
-});
+});*/
 
 // like button changing when user click
-/*const likeButton = $("#like-button");
+/*
 let hasLiked;
 likeButton.click(() => {
     hasLiked = likeButton.hasClass("fas");

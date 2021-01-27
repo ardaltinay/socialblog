@@ -41,7 +41,7 @@
                             <img class="card-img" th:data="${picture.getId()}" th:src="@{'/myimages/' + ${picture.getPath()}}" alt="Photos">
                             <div class="card-body">
                                 <p class="card-text" th:text="${picture.getText()}"></p>
-                                <span class="card-text"><i id="like-button" class="far fa-thumbs-up"></i></span>
+                                <a class="card-text"><i class="far fa-thumbs-up"></i></a>
                             </div>
                         </div>
                     </div>
