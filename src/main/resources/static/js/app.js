@@ -112,15 +112,27 @@ $("#button-yes").click(function () {
     })
 })
 
-let pictureId = $(".card-img").attr("data");
-$.post("/like?type=get", { picId: pictureId }).done(function(data) {
-    console.log(data)
+$(".card-img").each(function( index ) {
+
+    $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
+        if (data["isLiked"] == 1) {
+            $(this).next().children( "span" ).children("i").removeClass("far").addClass("fas");
+
+        }
+    });
+
 });
 
-/* let pictureId = $(".card-img").attr("data");
+likeButton = $(".fa-thumbs-up");
+
+likeButton.click(function() {
+    $(this).hide();
+});
+
+//let pictureId = $(".card-img").attr("data")
 $.post("/like?type=set", { picId: pictureId }).done(function(data) {
     console.log(data)
-}); */
+});
 
 // like button changing when user click
 /*const likeButton = $("#like-button");

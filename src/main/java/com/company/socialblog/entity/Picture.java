@@ -57,8 +57,18 @@ public class Picture implements Serializable {
         this.active = true;
     }
 
-    public void addLikedUser(User testUser) {
-        likedUsers.add(testUser);
+    public Boolean getLikedUser(User authUser) {
+        if( likedUsers.contains(authUser) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void addLikedUser(User authUser) {
+        if (!this.getLikedUser(authUser)) {
+            likedUsers.add(authUser);
+        }
     }
 
     @Override
