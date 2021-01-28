@@ -70,4 +70,27 @@ public class AjaxLikePostRequestService {
         return map;
     }
 
+    public HashMap<String, Integer> delLike(HttpServletRequest request) {
+        User user = findUserFromSessionService.findUser(request);
+        HashMap<String, Integer> map = new HashMap<>();
+        int picId = 0;
+        Picture pic = null;
+        try {
+            picId = Integer.parseInt(request.getParameter("picId"));
+            pic = pictureService.findPictureById(picId);
+        } catch (NumberFormatException e) {}
+        if (picId != 0 && pic != null) {
+            map.put("status", 1);
+            try{
+                pic.delLikedUser(user);
+                pictureService.savePicture(pic);
+            } catch (Exception e) {
+                map.put("status", 2);
+            }
+        } else {
+            map.put("status", 0);
+        }
+        return map;
+    }
+
 }

@@ -113,20 +113,21 @@ $("#button-yes").click(function () {
 })
 
 // when document load
-$(function() {
+$(document).ready(() => {
     $(".card-img").each(function() {
         $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
+            console.log(data)
             if (data["isLiked"] == 1) {
-                $(this).next().children( "a" ).children("i").removeClass("far").addClass("fas");
+                $(this).next().children("a").children("i").removeClass("far").addClass("fas");
             }
         });
     });
 });
 
-likeButton = $(".fa-thumbs-up");
-picId = likeButton.parent().parent().prev().attr("data");
-
+// like button click function
+const likeButton = $(".fa-thumbs-up");
 likeButton.click(function() {
+    let picId = likeButton.parent().parent().prev().attr("data");
     let hasLiked = $(this).hasClass("fas");
     if(!hasLiked) {
         $.post("/like?type=set", { picId: picId }).done((data) => {
@@ -136,38 +137,14 @@ likeButton.click(function() {
             }
         })
     } else {
-        $.post("/like?type=set", { picId: picId }).done((data) => {
+        $.post("/like?type=del", { picId: picId }).done((data) => {
             console.log(data);
             if(data["status"] == 1) {
                 $(this).removeClass("fas").addClass("far");
             }
         })
-        //$(this).removeClass("far").addClass("fas");
     }
 });
-
-//let pictureId = $(".card-img").attr("data")
-/*$.post("/like?type=set", { picId: pictureId }).done(function(data) {
-    console.log(data)
-});*/
-
-// like button changing when user click
-/*
-let hasLiked;
-likeButton.click(() => {
-    hasLiked = likeButton.hasClass("fas");
-    if(hasLiked) {
-        likeButton.removeClass("fas");
-        likeButton.addClass("far");
-    } else {
-        likeButton.removeClass("far");
-        likeButton.addClass("fas");
-    }
-    // send controller to like button data
-    $.post("/like",  { hasLiked: !hasLiked }).done(function(data) {
-        console.log(data.hasLiked)
-    })
-})*/
 
 
 

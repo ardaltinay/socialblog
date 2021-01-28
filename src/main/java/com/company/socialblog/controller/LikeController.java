@@ -33,6 +33,8 @@ public class LikeController {
                 return ajaxLikePostRequestService.getLike(request);
             case "set":
                 return ajaxLikePostRequestService.setLike(request);
+            case "del":
+                return ajaxLikePostRequestService.delLike(request);
             default:
                 return null;
         }

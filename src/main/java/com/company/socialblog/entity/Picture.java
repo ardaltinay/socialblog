@@ -58,7 +58,7 @@ public class Picture implements Serializable {
     }
 
     public Boolean getLikedUser(User authUser) {
-        if( likedUsers.contains(authUser) ) {
+        if(likedUsers.contains(authUser)) {
             return true;
         } else {
             return false;
@@ -68,6 +68,12 @@ public class Picture implements Serializable {
     public void addLikedUser(User authUser) {
         if (!this.getLikedUser(authUser)) {
             likedUsers.add(authUser);
+        }
+    }
+
+    public void delLikedUser(User authUser) {
+        if(likedUsers.contains(authUser)) {
+            likedUsers.remove(authUser);
         }
     }
 
