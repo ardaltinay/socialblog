@@ -113,6 +113,7 @@ $("#button-yes").click(function () {
 })
 
 // when document load
+const likeButton = $(".fa-thumbs-up");
 $(document).ready(() => {
     $(".card-img").each(function() {
         $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
@@ -125,19 +126,17 @@ $(document).ready(() => {
 });
 
 // like button click function
-const likeButton = $(".fa-thumbs-up");
 likeButton.click(function() {
-    let picId = likeButton.parent().parent().prev().attr("data");
     let hasLiked = $(this).hasClass("fas");
     if(!hasLiked) {
-        $.post("/like?type=set", { picId: picId }).done((data) => {
+        $.post("/like?type=set", { picId: $(this).parent().parent().prev().attr("data") }).done((data) => {
             console.log(data);
             if(data["status"] == 1) {
                 $(this).removeClass("far").addClass("fas");
             }
         })
     } else {
-        $.post("/like?type=del", { picId: picId }).done((data) => {
+        $.post("/like?type=del", { picId: $(this).parent().parent().prev().attr("data") }).done((data) => {
             console.log(data);
             if(data["status"] == 1) {
                 $(this).removeClass("fas").addClass("far");
