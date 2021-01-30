@@ -49,7 +49,7 @@ public class User implements Serializable {
     private boolean active;
 
     @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date timestamp;
 
     @Column(name = "profile_photo")

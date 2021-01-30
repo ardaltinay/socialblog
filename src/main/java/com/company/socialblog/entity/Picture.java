@@ -31,7 +31,7 @@ public class Picture implements Serializable {
     private String text;
 
     @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date timestamp;
 
     @Column(name = "active")

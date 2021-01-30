@@ -145,6 +145,16 @@ likeButton.click(function() {
     }
 });
 
+// follow button click function
+const followButton = $("#follow-button");
+followButton.click(function () {
+    $.post("/follow", { userIdTo: $(this).attr("data") }).done((data) => {
+        if(data.isFollow == 1) {
+            $(this).text("Unfollow")
+        }
+    })
+})
+
 
 
 

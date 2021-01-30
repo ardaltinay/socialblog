@@ -26,18 +26,19 @@
                 <div class="col-md-4">
                     <h3>User Details</h3>
                     <div class="card">
-                        <img th:if="${userProfilePhoto}" class="card-img-top" th:src="@{'/myimages/' + ${userProfilePhoto}}" alt="Profile Photo">
+                        <img th:if="${user.getProfilePhoto()}" class="card-img-top" th:src="@{'/myimages/' + ${user.getProfilePhoto()}}" alt="Profile Photo">
                         <div class="card-body">
-                            <p class="card-title"><strong th:text="|Username: ${username}|"></strong></p>
-                            <p class="card-text" th:text="|Email: ${userEmail}|"></p>
-                            <p class="card-text" th:text="|Biography: ${userBiography}|"></p>
+                            <p id="follow-button" class="text-primary" th:data="${user.getId()}">Follow!</p>
+                            <p class="card-title"><strong th:text="|Username: ${user.getUsername()}|"></strong></p>
+                            <p class="card-text" th:text="|Email: ${user.getEmail()}|"></p>
+                            <p class="card-text" th:text="|Biography: ${user.getBiography()}|"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <h3>User Photos</h3>
                     <div class="row">
-                        <div class="card" th:each="picture : ${pictures}">
+                        <div class="card" th:each="picture : ${user.getPictures()}">
                             <img class="card-img" th:data="${picture.getId()}" th:src="@{'/myimages/' + ${picture.getPath()}}" alt="Photos">
                             <div class="card-body">
                                 <p class="card-text" th:text="${picture.getText()}"></p>
