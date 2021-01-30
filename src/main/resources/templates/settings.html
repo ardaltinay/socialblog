@@ -23,14 +23,14 @@
                 <div class="box box-settings">
                     <form action="/settings" method="post" enctype="multipart/form-data">
                         <p id="formHeader"><b>Settings</b></p>
-                        <img th:if="${userProfilePhoto}" th:src="@{'/myimages/' + ${userProfilePhoto}}" alt="Profile Photo">
+                        <img th:if="${user.getProfilePhoto()}" th:src="@{'/myimages/' + ${user.getProfilePhoto()}}" alt="Profile Photo">
                         <label class="formText">Choose your profile photo:</label>
                         <input type="file" class="form-control-file" name="profile-photo">
                         <div th:class="error-field" th:text="${errorMessage}"></div>
                         <input type="submit" value="Save" id="photo-save">
                     </form>
                     <p class="formText">You can change your biography here.</p>
-                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${userBiography}"></textarea>
+                    <textarea id="bio-textarea" class="form-control" rows="3" th:text="${user.getBiography()}"></textarea>
                     <div>
                         <p class="success-bio">Biography updated!</p>
                         <p class="fail-bio">Could not update biography, please try again!</p>
@@ -38,7 +38,7 @@
                     <span id="bio-save">Save</span>
 
                     <p class="formText">You can change your email address here.</p>
-                    <input type="email" id="email-input" class="form-control" placeholder="Email" th:value="${userEmail}">
+                    <input type="email" id="email-input" class="form-control" placeholder="Email" th:value="${user.getEmail()}">
                     <div>
                         <p class="fail-email">Could not update email, please try again!</p>
                         <p class="notValid-email">Check your e-mail format!</p>
@@ -58,7 +58,7 @@
                         <p class="success-pass">Password updated!</p>
                     </div>
                     <span id="pass-save">Save</span>
-                    <div class="register-date" th:text="|Registered date: ${userTimestamp}|"></div>
+                    <div class="register-date" th:text="|Registered date: ${user.getTimestamp()}|"></div>
                     <span id="disable-link">Disable Account</span>
                     <div id="disable-content">
                         <p class="text-primary">Are you sure you want to disable your account?</p>

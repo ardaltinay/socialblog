@@ -48,10 +48,7 @@ public class SettingsController {
             return "redirect:/login";
         }
         // add user attributes for template to model
-        model.addAttribute("userBiography", user.getBiography());
-        model.addAttribute("userEmail", user.getEmail());
-        model.addAttribute("userTimestamp", user.getTimestamp());
-        model.addAttribute("userProfilePhoto", user.getProfilePhoto());
+        model.addAttribute("user", user);
 
         return "settings";
     }
