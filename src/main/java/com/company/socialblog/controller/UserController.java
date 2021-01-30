@@ -28,11 +28,14 @@ public class UserController {
     @GetMapping("/user/{username}")
     public String userPageGet(@PathVariable("username") String username, Model model,HttpServletRequest request) {
         User sessionUser = findUserFromSessionService.findUser(request);
+        User user = userService.findByUsername(username);
+        if(user == sessionUser) {
+            return "redirect:/profile";
+        }
         if(sessionUser == null) {
             return "redirect:/login?path=/user/" + username;
         }
-        // finding user from db
-        User user = userService.findByUsername(username);
+
         if(user == null) {
             throw new UserNotFoundException("Username: " + username + " not found.");
         }
