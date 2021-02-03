@@ -12,6 +12,4 @@ public interface UserFollowService {
 
     void delete(int userIdFrom, int userIdTo);
 
-    //UserFollow findUserFollowByUserIdFromAndUserIdTo(int userIdFrom, int userIdTo);
-
 }

@@ -36,11 +36,15 @@ public class AjaxFollowPostRequestService {
 
         List<UserFollow> userFollows = userFollowService.findByUserIdFrom(userIdFrom);
 
-        for (UserFollow userFollow : userFollows) {
-            if(userIdTo == userFollow.getUserIdTo()) {
-                map.put("isFollow", 1);
-            } else {
-                map.put("isFollow", 0);
+        if(userFollows.size() == 0) {
+            map.put("isFollow", 0);
+        } else {
+            for (UserFollow userFollow : userFollows) {
+                if(userIdTo == userFollow.getUserIdTo()) {
+                    map.put("isFollow", 1);
+                } else {
+                    map.put("isFollow", 0);
+                }
             }
         }
         return map;

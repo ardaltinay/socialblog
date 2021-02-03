@@ -125,8 +125,8 @@ $(document).ready(() => {
             });
         });
         $.post("/follow?type=get", { userIdTo: followButton.attr("data") }).done((data) => {
-            if(data["isFollow"] == 1) {
-                $(this).text("Unfollow!");
+            if(data.isFollow == 1) {
+                followButton.text("Unfollow!");
             }
         })
     }
@@ -152,8 +152,8 @@ likeButton.click(function() {
 
 // follow button click function
 followButton.click(function () {
-    //$.post("/follow?type=get", { userIdTo: $(this).attr("data") }).done((data) => {
-        if(!$(this).text('Follow!')) {
+    $.post("/follow?type=get", { userIdTo: $(this).attr("data") }).done((data) => {
+        if(data.isFollow == 1) {
             $.post("/follow?type=del", { userIdTo: $(this).attr("data") }).done((data) => {
                 if(data.status == 1) {
                     $(this).text("Follow!");
@@ -166,7 +166,7 @@ followButton.click(function () {
                 }
             })
         }
-    //})
+    })
 })
 
 
