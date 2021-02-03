@@ -114,15 +114,22 @@ $("#button-yes").click(function () {
 
 // when document load
 const likeButton = $(".fa-thumbs-up");
+const followButton = $("#follow-button");
 $(document).ready(() => {
-    $(".card-img").each(function() {
-        $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
-            console.log(data)
-            if (data["isLiked"] == 1) {
-                $(this).next().children("a").children("i").removeClass("far").addClass("fas");
-            }
+    if(window.location.href.indexOf('/user') > -1) {
+        $(".card-img").each(function() {
+            $.post("/like?type=get", { picId: $(this).attr("data") }).done((data) => {
+                if (data["isLiked"] == 1) {
+                    $(this).next().children("a").children("i").removeClass("far").addClass("fas");
+                }
+            });
         });
-    });
+        $.post("/follow?type=get", { userIdTo: followButton.attr("data") }).done((data) => {
+            if(data["isFollow"] == 1) {
+                $(this).text("Unfollow!");
+            }
+        })
+    }
 });
 
 // like button click function
@@ -130,14 +137,12 @@ likeButton.click(function() {
     let hasLiked = $(this).hasClass("fas");
     if(!hasLiked) {
         $.post("/like?type=set", { picId: $(this).parent().parent().prev().attr("data") }).done((data) => {
-            console.log(data);
             if(data["status"] == 1) {
                 $(this).removeClass("far").addClass("fas");
             }
         })
     } else {
         $.post("/like?type=del", { picId: $(this).parent().parent().prev().attr("data") }).done((data) => {
-            console.log(data);
             if(data["status"] == 1) {
                 $(this).removeClass("fas").addClass("far");
             }
@@ -146,13 +151,22 @@ likeButton.click(function() {
 });
 
 // follow button click function
-const followButton = $("#follow-button");
 followButton.click(function () {
-    $.post("/follow", { userIdTo: $(this).attr("data") }).done((data) => {
-        if(data.isFollow == 1) {
-            $(this).text("Unfollow!")
+    //$.post("/follow?type=get", { userIdTo: $(this).attr("data") }).done((data) => {
+        if(!$(this).text('Follow!')) {
+            $.post("/follow?type=del", { userIdTo: $(this).attr("data") }).done((data) => {
+                if(data.status == 1) {
+                    $(this).text("Follow!");
+                }
+            })
+        } else {
+            $.post("/follow?type=set", { userIdTo: $(this).attr("data") }).done((data) => {
+                if(data.status == 1) {
+                    $(this).text("Unfollow!");
+                }
+            })
         }
-    })
+    //})
 })
 
 

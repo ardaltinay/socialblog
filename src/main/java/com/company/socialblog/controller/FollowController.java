@@ -3,6 +3,7 @@ package com.company.socialblog.controller;
 import com.company.socialblog.entity.Picture;
 import com.company.socialblog.entity.User;
 import com.company.socialblog.entity.UserFollow;
+import com.company.socialblog.service.AjaxFollowPostRequestService;
 import com.company.socialblog.service.FindUserFromSessionService;
 import com.company.socialblog.service.UserFollowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +18,31 @@ import java.util.HashMap;
 public class FollowController {
     private FindUserFromSessionService findUserFromSessionService;
     private UserFollowService userFollowService;
+    private AjaxFollowPostRequestService ajaxFollowPostRequestService;
     @Autowired
     public FollowController(FindUserFromSessionService findUserFromSessionService,
-                            UserFollowService userFollowService) {
+                            UserFollowService userFollowService,
+                            AjaxFollowPostRequestService ajaxFollowPostRequestService) {
         this.findUserFromSessionService = findUserFromSessionService;
         this.userFollowService = userFollowService;
+        this.ajaxFollowPostRequestService = ajaxFollowPostRequestService;
     }
 
     @PostMapping("/follow")
     @ResponseBody
     public HashMap<String, Integer> followPost(HttpServletRequest request) {
         HashMap<String, Integer> map = new HashMap<>();
-        int userIdTo = 0;
-        int userIdFrom = findUserFromSessionService.findUser(request).getId();
-        try {
-            userIdTo = Integer.parseInt(request.getParameter("userIdTo"));
-        } catch (NumberFormatException e) {}
-
-        if(userIdTo != 0 && userIdFrom != 0) {
-            map.put("isFollow", 1);
-            try {
-                UserFollow userFollow = new UserFollow();
-                userFollow.setUserIdTo(userIdTo);
-                userFollow.setUserIdFrom(userIdFrom);
-                userFollowService.saveUserFollow(userFollow);
-            } catch (Exception e) {
-                map.put("isFollow", 0);
-                e.printStackTrace();
-            }
-        } else {
-            map.put("isFollow", 0);
+        String type = request.getParameter("type");
+        switch (type) {
+            case "get":
+                return ajaxFollowPostRequestService.getFollow(request);
+            case "set":
+                return ajaxFollowPostRequestService.setFollow(request);
+            case "del":
+                return ajaxFollowPostRequestService.delFollow(request);
+            default:
+                map.put("type", 0);
+                return map;
         }
-        return map;
     }
 }
