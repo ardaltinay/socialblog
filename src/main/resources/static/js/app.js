@@ -115,6 +115,7 @@ $("#button-yes").click(function () {
 // when document load
 const likeButton = $(".fa-thumbs-up");
 const followButton = $("#follow-button");
+let profileFollow = false;
 $(document).ready(() => {
     if(window.location.href.indexOf('/user') > -1) {
         $(".card-img").each(function() {
@@ -126,7 +127,8 @@ $(document).ready(() => {
         });
         $.post("/follow?type=get", { userIdTo: followButton.attr("data") }).done((data) => {
             if(data.isFollow == 1) {
-                followButton.text("Unfollow!");
+                profileFollow = true;
+                followButton.text("Unfollow");
             }
         })
     }
@@ -151,22 +153,24 @@ likeButton.click(function() {
 });
 
 // follow button click function
-followButton.click(function () {
-    $.post("/follow?type=get", { userIdTo: $(this).attr("data") }).done((data) => {
-        if(data.isFollow == 1) {
-            $.post("/follow?type=del", { userIdTo: $(this).attr("data") }).done((data) => {
-                if(data.status == 1) {
-                    $(this).text("Follow!");
-                }
-            })
-        } else {
-            $.post("/follow?type=set", { userIdTo: $(this).attr("data") }).done((data) => {
-                if(data.status == 1) {
-                    $(this).text("Unfollow!");
-                }
-            })
-        }
-    })
+followButton.click(function (e) {
+    e.preventDefault();
+    if(profileFollow == true) {
+        $.post("/follow?type=del", { userIdTo: $(this).attr("data") }).done((data) => {
+            if(data.status == 1) {
+                $(this).text("Follow");
+                profileFollow = false;
+            }
+        })
+    } else {
+        $.post("/follow?type=set", { userIdTo: $(this).attr("data") }).done((data) => {
+            if(data.status == 1) {
+                $(this).text("Unfollow");
+                profileFollow = true;
+            }
+        })
+    }
+
 })
 
 

@@ -202,8 +202,9 @@ body > div > main > div > div.col-md-4 > div > div {
     text-align: center;
 }
 
-body > div > main > div > div.col-md-4 > div > div > p {
+body > div > main > div > div.col-md-4 > div > div > a {
     cursor: pointer;
+    text-decoration: none;
 }
 body > div > main > div > div.col-md-8 > div.row {
     justify-content: space-around;

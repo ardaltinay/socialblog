@@ -8,7 +8,7 @@ public interface UserFollowService {
 
     void saveUserFollow(UserFollow userFollow);
 
-    List<UserFollow> findByUserIdFrom(int id);
+    UserFollow findByUserIdFromTo(int idFrom, int idTo);
 
     void delete(int userIdFrom, int userIdTo);
 

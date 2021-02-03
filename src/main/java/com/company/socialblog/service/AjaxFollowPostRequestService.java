@@ -21,11 +21,10 @@ public class AjaxFollowPostRequestService {
         this.userFollowService = userFollowService;
     }
 
-    HashMap<String, Integer> map = new HashMap<>();
-    int userIdTo = 0;
-    int userIdFrom = 0;
-
     public HashMap<String, Integer> getFollow(HttpServletRequest request) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int userIdTo = 0;
+        int userIdFrom = 0;
         try{
             userIdFrom = findUserFromSessionService.findUser(request).getId();
         } catch (Exception e){}
@@ -34,23 +33,20 @@ public class AjaxFollowPostRequestService {
             userIdTo = Integer.parseInt(request.getParameter("userIdTo"));
         } catch (NumberFormatException e) {}
 
-        List<UserFollow> userFollows = userFollowService.findByUserIdFrom(userIdFrom);
+        UserFollow userFollow = userFollowService.findByUserIdFromTo(userIdFrom, userIdTo);
 
-        if(userFollows.size() == 0) {
+        if(userFollow == null) {
             map.put("isFollow", 0);
         } else {
-            for (UserFollow userFollow : userFollows) {
-                if(userIdTo == userFollow.getUserIdTo()) {
-                    map.put("isFollow", 1);
-                } else {
-                    map.put("isFollow", 0);
-                }
-            }
+            map.put("isFollow", 1);
         }
         return map;
     }
 
     public HashMap<String, Integer> setFollow(HttpServletRequest request) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int userIdTo = 0;
+        int userIdFrom = 0;
         try{
             userIdFrom = findUserFromSessionService.findUser(request).getId();
         } catch (Exception e){}
@@ -78,6 +74,9 @@ public class AjaxFollowPostRequestService {
     }
 
     public HashMap<String, Integer> delFollow(HttpServletRequest request) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int userIdTo = 0;
+        int userIdFrom = 0;
         try{
             userIdFrom = findUserFromSessionService.findUser(request).getId();
         } catch (Exception e){}

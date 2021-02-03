@@ -25,8 +25,8 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     @Override
     @Transactional
-    public List<UserFollow> findByUserIdFrom(int id) {
-        return userFollowRepository.findAllByUserIdFrom(id);
+    public UserFollow findByUserIdFromTo(int idFrom, int idTo) {
+        return userFollowRepository.findByUserIdFromTo(idFrom, idTo);
     }
 
     @Override

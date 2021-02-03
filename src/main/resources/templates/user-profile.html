@@ -6,8 +6,8 @@
         <nav class="navbar navbar-light" style="background-color: #fff;">
             <a class="navbar-brand" href="/">Social Blog</a>
             <ul class="nav justify-content-end">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline" method="get" action="/search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search user by username" aria-label="Search" name="user">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <li class="nav-item">
@@ -28,7 +28,7 @@
                     <div class="card">
                         <img th:if="${user.getProfilePhoto()}" class="card-img-top" th:src="@{'/myimages/' + ${user.getProfilePhoto()}}" alt="Profile Photo">
                         <div class="card-body">
-                            <p id="follow-button" class="text-primary" th:data="${user.getId()}">Follow!</p>
+                            <a href="#" id="follow-button" class="text-primary" th:data="${user.getId()}">Follow</a>
                             <p class="card-title"><strong th:text="|Username: ${user.getUsername()}|"></strong></p>
                             <p class="card-text" th:text="|Email: ${user.getEmail()}|"></p>
                             <p class="card-text" th:text="|Biography: ${user.getBiography()}|"></p>
@@ -42,13 +42,14 @@
                             <img class="card-img" th:data="${picture.getId()}" th:src="@{'/myimages/' + ${picture.getPath()}}" alt="Photos">
                             <div class="card-body">
                                 <p class="card-text" th:text="${picture.getText()}"></p>
-                                <a class="card-text"><i class="far fa-thumbs-up"></i></a>
+                                <a href="#" class="card-text"><i class="far fa-thumbs-up"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        <footer class="footer" th:include="footer :: footerfragment"></footer>
     </div>
     <div th:replace="footer :: scriptfragment"></div>
 </body>
