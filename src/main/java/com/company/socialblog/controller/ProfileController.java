@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ProfileController {
-
-    public static final String USERNAME = "USERNAME";
-    private UserService userService;
     private FileUploadService fileUploadService;
     private UniqueFileNameService fileNameService;
     private PictureService pictureService;
@@ -25,13 +22,11 @@ public class ProfileController {
     private FindUserFromSessionService findUserService;
 
     @Autowired
-    public ProfileController(UserService userService,
-                             FileUploadService fileUploadService,
+    public ProfileController(FileUploadService fileUploadService,
                              UniqueFileNameService fileNameService,
                              PictureService pictureService,
                              FileTypeControlService fileTypeControlService,
                              FindUserFromSessionService findUserService) {
-        this.userService = userService;
         this.fileUploadService = fileUploadService;
         this.fileNameService = fileNameService;
         this.pictureService = pictureService;

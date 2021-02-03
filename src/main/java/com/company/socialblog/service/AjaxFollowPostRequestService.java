@@ -1,13 +1,11 @@
 package com.company.socialblog.service;
 
-import com.company.socialblog.entity.User;
 import com.company.socialblog.entity.UserFollow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class AjaxFollowPostRequestService {

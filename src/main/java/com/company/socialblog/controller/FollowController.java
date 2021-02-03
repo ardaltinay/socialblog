@@ -1,11 +1,6 @@
 package com.company.socialblog.controller;
 
-import com.company.socialblog.entity.Picture;
-import com.company.socialblog.entity.User;
-import com.company.socialblog.entity.UserFollow;
 import com.company.socialblog.service.AjaxFollowPostRequestService;
-import com.company.socialblog.service.FindUserFromSessionService;
-import com.company.socialblog.service.UserFollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,15 +11,9 @@ import java.util.HashMap;
 
 @Controller
 public class FollowController {
-    private FindUserFromSessionService findUserFromSessionService;
-    private UserFollowService userFollowService;
     private AjaxFollowPostRequestService ajaxFollowPostRequestService;
     @Autowired
-    public FollowController(FindUserFromSessionService findUserFromSessionService,
-                            UserFollowService userFollowService,
-                            AjaxFollowPostRequestService ajaxFollowPostRequestService) {
-        this.findUserFromSessionService = findUserFromSessionService;
-        this.userFollowService = userFollowService;
+    public FollowController(AjaxFollowPostRequestService ajaxFollowPostRequestService) {
         this.ajaxFollowPostRequestService = ajaxFollowPostRequestService;
     }
 
