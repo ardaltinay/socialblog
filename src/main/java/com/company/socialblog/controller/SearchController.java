@@ -24,10 +24,10 @@ public class SearchController {
 
     @GetMapping("/search")
     public String searchPageGet(HttpServletRequest request, Model model) {
-        /*User sessionUser = findUserFromSessionService.findUser(request);
+        User sessionUser = findUserFromSessionService.findUser(request);
         if (sessionUser == null) {
             return "redirect:/login";
-        }*/
+        }
         String searchParam = request.getParameter("user");
         List<User> users = userService.findByUsernameWithParam(searchParam);
         model.addAttribute("users", users);
