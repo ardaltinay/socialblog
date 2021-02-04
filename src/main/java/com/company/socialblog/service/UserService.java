@@ -14,4 +14,6 @@ public interface UserService {
 
     User findByUsernameAndPassword(String username, String password);
 
+    List<User> findByUsernameWithParam(String searchParam);
+
 }

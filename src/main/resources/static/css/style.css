@@ -194,6 +194,14 @@ body > div > main > div > div.col-md-4 > div {
     width: 15rem;
     margin: auto;
 }
+body > div > main > div > div > div.search-card {
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+body > div > main > div > div > div.search-card img {
+    width: 8rem;
+    height: 10rem;
+}
 body > div > main > div > div.col-md-4 > div > img {
     border-radius: 50%;
 }

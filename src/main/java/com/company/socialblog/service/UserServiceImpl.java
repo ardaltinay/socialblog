@@ -42,5 +42,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
+    @Override
+    public List<User> findByUsernameWithParam(String searchParam) {
+        return userRepository.findByUsernameWithParam(searchParam);
+    }
+
 
 }
