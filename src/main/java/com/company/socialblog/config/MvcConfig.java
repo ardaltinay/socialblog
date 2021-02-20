@@ -9,6 +9,6 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/myimages/**")
-                .addResourceLocations("file:///D:/social-blog-uploads/");
+                .addResourceLocations("/home/arda/Desktop/social-blog-uploads");
     }
 }

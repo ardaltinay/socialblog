@@ -68,7 +68,7 @@ public class ProfileController {
         boolean isValidFileType = fileTypeControlService.fileTypeControl(uploadedPicture);
         if(isValidFileType) {
             try {
-                fileUploadService.uploadFile(uploadedPicture, "\\" + fileName);
+                fileUploadService.uploadFile(uploadedPicture, "/" + fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

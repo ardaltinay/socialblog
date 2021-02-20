@@ -50,7 +50,7 @@ public class UniqueFileNameService {
         int month = time.getMonthValue();
         int day = time.getDayOfMonth();
 
-        String filePath = year + "\\" + month + "\\" + day + "\\";
+        String filePath = year + "/" + month + "/" + day + "/";
         return filePath;
     }
 }

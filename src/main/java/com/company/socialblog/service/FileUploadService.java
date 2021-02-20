@@ -15,7 +15,7 @@ public class FileUploadService {
     private UniqueFileNameService uniqueFileNameService;
 
     public void uploadFile(MultipartFile file, String newFileName) throws IOException {
-        String path = "D:\\social-blog-uploads\\";
+        String path = "/home/arda/Desktop/social-blog-uploads/";
 
         String filePath = uniqueFileNameService.getPrefixForFilePAth();
 
